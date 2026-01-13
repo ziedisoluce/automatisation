@@ -1,3 +1,0 @@
-scripts/pull.mjs : download a workflow from the n8n API using a workflow ID, save the payload into Pull/, and copy the same JSON into Push/ so you can edit it before pushing.
-
-scripts/push.mjs : read a workflow JSON from Push/ (or from an absolute path you pass) and send it to https://n8n.gdev.fr using POST for a new workflow or PUT when you also pass the workflow ID as a second argument.
