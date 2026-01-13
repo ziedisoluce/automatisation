@@ -1,29 +1,105 @@
-# Automatisation pour SAAS Apporteurs d’Affaires
+# Automatisation pour SAAS Apporteurs d'affaires
 
-Ce projet a pour objectif de proposer un socle opérationnel qui connecte une interface front-end à une couche de workflows n8n afin de supporter toute l’activité d’un SAAS d’apporteurs d’affaires (gestion des leads, qualification, suivi et remontée des actions vers les portails clients).
+Ce dépôt contient la base technique d'un mini-SaaS qui met en relation les apporteurs d’affaires et les managers d’une société de courtage avec leurs données HubSpot via un front-end statique (HTML/CSS/jQuery) et une couche d’automatisation n8n orchestrant toute la logique métier décrite dans `docs/Documentation technique.pdf` et `docs/Cahier des charges.pdf`.
 
 ## Architecture générale
 
-- **Front-end (`front-end/`)** : ensemble de pages HTML/CSS/JS basées sur une template prête à l’emploi, regroupant tableaux de bord, formulaires, listes et écrans d’administration. Le dossier embarque un gestionnaire de dépendances Node et une structure de composants statiques.
-- **Workflows (n8n)** : les automatisations métier sont censées être définies dans n8n et manipulées par deux scripts principaux (`Tools/pull.mjs` et `Tools/push.mjs`) qui interagissent avec l’API `https://n8n.gdev.fr` en s’appuyant sur la clé `N8N_API_KEY`.
-- **Orchestration** : la logique d’orchestration repose sur la boucle "pull / modification / push" : on importe un workflow depuis n8n, on l’adapte en local, puis on le renvoie. Le front-end doit à terme déclencher ou afficher les résultats de ces workflows via une couche d’intégration plus fine.
-
-Ces trois sous-domaines sont documentés séparément : `README_FRONTEND.md` (front-end), `README_WORKFLOWS.md` (workflows) et `README_INTEGRATION.md` (connexion entre l’interface et les workflows). Consulte ces fichiers pour les détails techniques, les limitations actuelles et les suites à donner.
+- **Front-end (`front-end/`)** : pages statiques (dashboards, listes, formulaires, profils, erreurs) fournies par une template prête à l’emploi et stylisées via SCSS pour livrer rapidement une interface complète.
+- **Workflows (n8n)** : un unique workflow hébergé sur `https://n8n.gdev.fr` exécute toute la logique métier (authentification, deals, reporting, exports) en utilisant les nodes Webhook, Function, IF, Switch, HubSpot, Split in Batches, Spreadsheet File, Cron, Email/SMTP et Respond to Webhook.
+- **Orchestration** : deux scripts (`Tools/pull.mjs`, `Tools/push.mjs`) permettent d’extraire (Pull/) puis de publier (Push/) les définitions n8n. L’intégration front-end ↔ workflows reposera sur des appels `POST /api` définis dans le contrat unique.
 
 ## Interactions entre les sous-systèmes
 
-1. Les utilisateurs naviguent dans l’interface front-end pour créer des leads, visualiser des dashboards ou gérer des tâches.
-2. Ces actions doivent être relayées vers n8n via des API ou des événements webhooks afin de déclencher les workflows métier (qualification, affectation, envoi d’emails, etc.).
-3. Le repo fournit pour l’instant une boucle manuelle : `Tools/pull.mjs` récupère les définitions depuis n8n, les développeurs les modifient, puis `Tools/push.mjs` les remet sur l’instance. Cette boucle servira de base pour automatiser les déploiements futurs.
+1. Le front-end affiche les formulaires et tableaux (login, création de lead, dashboards, exports) qui doivent déclencher des `entity.action` vers l’API n8n.
+2. Le workflow n8n reçoit ces appels via un webhook unique et les dirige vers la logique métier (auth, deals, manager, pipeline, prospects, export) en respectant les règles définies (team, rôles, filtres HubSpot).
+3. Les scripts `Tools/pull.mjs`/`push.mjs` permettent de synchroniser manuellement les définitions pendant le développement, jusqu’à l’automatisation complète des déploiements.
 
-## Rôles des README secondaires
+## Rôle des README secondaires
 
-- `README_FRONTEND.md` décrit l’état actuel du front-end, ses composants disponibles, ses limites (notamment l’absence de véritable backend) et les étapes à venir.
-- `README_WORKFLOWS.md` explique la logique attendue des workflows, l’infrastructure n8n et le statut des automatismes (ce qui tourne déjà, ce qui est en prototype).
-- `README_INTEGRATION.md` détaille la connexion entre l’interface et les workflows : comment les appels doivent être orchestrés, ce qui fonctionne aujourd’hui, ce qui reste à mettre en place et les choix techniques déjà arrêtés.
+- `README_FRONTEND.md` détaille l’état actuel du front (technos, écrans, limites) et explique comment les formulaires doivent appeler l’API `/api` dans le respect du contrat.
+- `README_WORKFLOWS.md` décrit la logique n8n : modèle de données HubSpot, nodes requis, tronc commun, routes métiers, étapes concrètes de chaque action et la liste des nodes utilisés.
+- `README_INTEGRATION.md` explique comment le front communique avec les workflows (POST `/api`, auth, règles de sécurité, réponses) et ce qui reste à implémenter pour sécuriser cette liaison.
 
-## État d’avancement
+## État d'avancement
 
-- **Fonctionnel** : structure front-end complète (pages, assets, styles), scripts `Tools/pull.mjs` et `Tools/push.mjs` capables de synchroniser les définitions avec `n8n.gdev.fr`.
-- **En cours** : création des workflows métier dans n8n (le dépôt ne contient pas encore de définitions fixes) et liaison front-end ↔ workflows (API/rest à écrire).
-- **À venir** : implémentation de l’authentification, des appels dynamiques aux workflows, du stockage des résultats et des tableaux de bord réactifs (après avoir défini la logique métier complète).
+- **Fonctionnel** : front-end statique complet pour prototyper les écrans ; scripts `Tools/pull.mjs` et `Tools/push.mjs` pour synchroniser les workflows.
+- **En cours** : modélisation des workflows n8n à partir du contrat ET des règles métier HubSpot (authentification, deals, dashboard manager, pipeline, prospects, export).
+- **À venir** : implémentation du POST `/api` aligné sur le contrat, ajout d’une couche d’authentification (JWT + cookies HttpOnly), automatisation des push/pull via CI/CD et tests d’intégration.
+
+## Spécifications techniques
+
+### 0. Contraintes globales
+
+- Un seul workflow n8n centralise toute la logique métier.
+- Un seul endpoint : `POST /api`.
+- Pas de cache applicatif (Simple Fetch uniquement) ; chaque requête est directe.
+- HubSpot est la source de vérité unique (contacts, deals).
+- Toute la logique métier est contenue dans n8n (aucun traitement dans le front).
+
+### 1. Modèle de données HubSpot (obligatoire)
+
+#### 1.1 Objet Contact
+- `email` (string)
+- `password_hash` (string, bcrypt)
+- `role_manager` (boolean)
+- `team` (string)
+- `access_tier` (string : `active` | `revoked`)
+- `last_login_at` (datetime)
+
+#### 1.2 Objet Deal
+- `referral_partner_email` (string)
+- `amount` (number)
+- `dealstage` (string)
+- `createdate` (datetime)
+- `closedate` (datetime)
+
+### 2. Contrat API unique
+
+- Endpoint : `POST /api`.
+- Payload attendu :
+  ```
+  {
+    "entity": "auth | me | deals | manager | pipeline | prospects | export",
+    "action": "login | profile | list | dashboard | kanban | csv | pdf",
+    "params": {}
+  }
+  ```
+- `entity.action` constitue la clef de routage du workflow n8n.
+
+### 3. Workflow n8n – tronc commun (toujours exécuté)
+
+1. **Node Webhook** (POST, path `/api`)
+2. **Function Normalize Input** : lecture du body, normalisation de `entity`, `action`, construction de `routeKey = entity.action`.
+3. **IF Validate Route** : ne permet que les routes listées (`auth.login`, `auth.logout`, `me.profile`, `deals.list`, `manager.dashboard`, `pipeline.kanban`, `prospects.list`, `export.csv`, `export.pdf`).
+4. **Function + IF Auth Guard** : pour toute route autre que `auth.login`, lecture du cookie `session`, vérification du JWT, injection de `authContext` contenant `email`, `role_manager`, `team`.
+5. **Switch Router** sur `routeKey` pour diriger vers les sous-workflows métiers.
+
+### 4. Parcours métier
+
+- **auth.login** : search HubSpot contact, vérification `access_tier`, bcrypt compare, génération du JWT (8 h), maj `last_login_at`, réponse avec `ok` et `redirect`.
+- **me.profile** : récupération contact HubSpot, mapping profil, `Respond to Webhook`.
+- **deals.list** : recherche Deals filtrés sur `referral_partner_email`, mapping + KPI, réponse JSON.
+- **manager.dashboard** : recherche contacts du manager (`team`, `role_manager != true`), extraction des emails, boucle `Split in Batches` sur les deals filtrés par partner email, agrégation des KPI, réponse JSON.
+- **pipeline.kanban** : fetch deals selon rôle, regroupement par `dealstage`, réponse JSON.
+- **prospects.list** : fetch deals, format tableau, réponse JSON.
+- **export.csv / export.pdf** : génération via `Spreadsheet File` ou `Respond to Webhook` selon la commande.
+
+### 5. Nodes n8n utilisés
+
+- Webhook
+- Function
+- IF
+- Switch
+- HubSpot
+- Split In Batches
+- Spreadsheet File
+- Cron
+- Email / SMTP
+- Respond to Webhook
+
+### 6. Règles de sécurité (non négociables)
+
+- Aucun mot de passe ne circule en clair.
+- Les erreurs restent génériques (anti-enumération).
+- Les cookies de session sont `HttpOnly`.
+- Accès strict basé sur `role_manager` et `team` dans le workflow (authContext).

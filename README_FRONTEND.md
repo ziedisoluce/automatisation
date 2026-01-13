@@ -1,38 +1,40 @@
 # Front-end
 
-## Technologies en place
+## Technologies et structure
 
-- Template HTML/CSS/JS classique, appuyée sur un dossier `vendor/` avec bibliothèques UI (widgets, grilles, composants).
-- Node.js est utilisé pour gérer les dépendances (`front-end/package.json`, `node_modules/`), ce qui peut servir à automatiser un build ou générer un site statique.
-- Une couche SCSS (`front-end/scss/`) permet de styliser rapidement les écrans et de générer `all.min.css`.
+- Template HTML/CSS/jQuery avec SCSS (`front-end/scss/`), composants UI (`front-end/ui-*`, `uc-*`, `widget-basic.html`) et dépendances gérées via `front-end/package.json`.
+- Assets prêts à l’emploi : dashboards, listes, formulaires, profils, messagerie, exports (CSV/PDF), pages d’erreur.
+- Front statique choisi parce qu’il respecte la contrainte de livraison rapide décrite dans `docs/Documentation technique.pdf` (Simple Fetch uniquement, pas de cache applicatif).
 
-## Fonctionnalités implémentées
+## Fonctionnalités et composants disponibles
 
-- Nombreux écrans de gestion interne : dashboards (`dashboard-apporteur.html`, `dashboard-manager.html`), listes métiers (`table-datatable-basic.html`), formulaires (`form-element.html`, `form-validation.html`) et écrans de profils/paramètres.
-- Pages de communication (email, blog, messagerie) déjà stylées et prêtes pour afficher du contenu.
-- Écrans de connexion/inscription (`page-login.html`, `page-register.html`) et d’erreurs (`page-error-404.html`, etc.).
+- Écrans principaux : `page-login.html`, `dashboard-apporteur.html`, `dashboard-manager.html`, `page-nouveau-lead.html`, `project-page.html`, `table-datatable-basic.html`, `app-profile.html`, `message.html`, `email-*`.
+- Widgets visuels (chartjs, morris, peity, calendar, kanban) accessibles via `chart-*.html`, `app-calender.html`, `kanban.html`.
+- Formulaires avancés (`form-element.html`, `form-validation.html`, `form-wizard.html`) prêts à collecter `email`, `team`, `referral_partner_email`, `amount`.
 
-## Composants existants
+## Spécifications pour l’interface
 
-- Éléments de navigation (menus, onglets, modals, accordéons, notifications).
-- Widgets de visualisation (charts, calendriers, kanban et cartes).
-- Formulaires multi-étapes, validateurs basiques et composants de chargement.
+- **Contrainte** : un seul endpoint `POST /api` (cf. contrat API) ; tout appel doit envoyer `entity`/`action` et `params` pertinents (ex. `entity: "auth", action: "login"`).
+- **Contrainte fetch** : utiliser des requêtes `fetch`/`axios` simples sans cache (Simple Fetch uniquement).
+- **Données envoyées** : utiliser le modèle HubSpot (`email`, `password`, `team`, etc.) pour alimenter les workflows ; les écrans doivent s’appuyer sur `params` identiques à ceux attendus par n8n.
+- **Sécurité** : ne jamais stocker de mot de passe en clair ; propagation du cookie `session` HttpOnly après `auth.login`.
 
-## État partiel ou en cours
+## Ce qui reste à finir
 
-- Les écrans sont statiques : aucune liaison avec une API métier ou une base de données n’existe.
-- Les formulaires ne soumettent rien et ne sont pas connectés au workflow n8n. Ils servent actuellement uniquement de maquettes fonctionnelles.
-- Il n’y a pas de système de composants JavaScript réutilisables ou de gestion d’état centralisée (Redux, Vuex, etc.).
+- Lier les formulaires (login, lead, dashboards) à `POST /api` en construisant le payload `{ entity, action, params }`.
+- Gérer les réponses JSON (statuts, KPI) et afficher les erreurs génériques reçues de n8n (anti-enumération).
+- Implémenter les transitions entre écrans selon `redirect` (`/dashboard` ou `/dashboard/team`) renvoyé par `auth.login`.
+- Ajouter des indicateurs dynamiques (statistiques, pipeline kanban) alimentés par les retours `deals.list`, `manager.dashboard`, `pipeline.kanban`.
 
-## Limitations connues
+## Limitations actuelles
 
-- Les pages ne sont pas responsives de manière éprouvée ; la cohérence mobile reste à valider.
-- Les données présentées sont fictives (mock) : tout passage en production devra brancher les appels HTTP.
-- Absence d’authentification fiable et de protection des ressources sensibles côté front-end.
+- Données mock uniquement, pas d’appel réel à HubSpot ou n8n.
+- Pas de gestion d’état complexe ni de bundler moderne ; tout reste en HTML/jQuery.
+- Pas de tests automatisés pour les composants UI.
 
-## Prochaines étapes front-end
+## Prochaines étapes
 
-1. Transformer les composants statiques en vues dynamiques alimentées par l’API (via fetch/axios ou sockets).
-2. Instaurer une couche d’authentification (JWT, OAuth) partagée entre la partie interface et les workflows.
-3. Implémenter la réactivité (rafraîchissement des dashboards, tables filtrables, formulaires connectés).
-4. Documenter les styles, les composants réutilisables et la manière dont les développeurs doivent les étendre.
+1. Implémenter tous les fetchs vers `/api` en respectant les routes autorisées (`auth.login`, `me.profile`, `deals.list`, `manager.dashboard`, `pipeline.kanban`, `prospects.list`, `export.csv`, `export.pdf`).
+2. Ajouter un gestionnaire d’erreurs génériques pour éviter les fuites d’information (anti-enumération).
+3. Mettre en place des loaders/notifications pour informer l’utilisateur des appels asynchrones.
+4. Documenter la façon dont chaque écran construit ses `params` pour faciliter la collaboration avec les workflows.

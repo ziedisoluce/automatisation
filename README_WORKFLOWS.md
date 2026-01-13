@@ -1,34 +1,61 @@
 # Workflows
 
-## Logique métier portée par les workflows
+## Objectif métier
 
-L’ambition est de piloter toute la chaîne d’apport d’affaires via n8n : réception d’un lead, qualification (scoring, vérification), assignation à un apporteur ou à un manager, notification par email/sms et synchronisation vers les outils clients. C’est également via les workflows que les actions front-end doivent être prises en charge (ex. validation de formulaire, génération de documents, envoi de relances).
+Un unique workflow n8n gère toute la logique : il reçoit les requêtes `POST /api`, valide les routes, applique les règles métier basées sur HubSpot (contacts et deals) et répond au front-end. Les workflows gèrent l’authentification (`auth.login`), la mise à jour de profil (`me.profile`), la liste des deals partenaires, le dashboard manager, la pipeline kanban, la liste des prospects et les exports (CSV/PDF).
 
-## Technologies et outils utilisés
+## Modèle de données HubSpot
 
-- n8n hébergé sur `https://n8n.gdev.fr` pour définir les automatisations.
-- Scripts Node pour synchroniser les définitions avec l’API n8n : `Tools/pull.mjs` (télécharge un workflow) et `Tools/push.mjs` (publie un JSON modifié).
-- Variables d’environnement (`N8N_API_KEY`) pour authentifier chaque interaction avec l’API REST de n8n.
+- **Contact** : `email`, `password_hash` (bcrypt), `role_manager`, `team`, `access_tier` (`active` | `revoked`), `last_login_at`.
+- **Deal** : `referral_partner_email`, `amount`, `dealstage`, `createdate`, `closedate`.
+- HubSpot reste la source de vérité unique ; tout filtre ou extraction se base sur ces champs.
 
-## Workflows opérationnels
+## Contrat API et routes autorisées
 
-- Pour le moment, aucun workflow métier n’est codé dans ce dépôt : l’essentiel du travail consiste à préparer la boucle de développement (pull/push) pour itérer sur les définitions côté n8n.
-- La logique métier reste donc à formaliser dans n8n avant d’être considérée comme « opérationnelle ».
+- Endpoint unique `POST /api` avec payload :
+  ```
+  {
+    "entity": "auth | me | deals | manager | pipeline | prospects | export",
+    "action": "login | profile | list | dashboard | kanban | csv | pdf",
+    "params": {}
+  }
+  ```
+- Le pair `entity.action` compose `routeKey`. Les routes autorisées sont : `auth.login`, `auth.logout`, `me.profile`, `deals.list`, `manager.dashboard`, `pipeline.kanban`, `prospects.list`, `export.csv`, `export.pdf`.
 
-## Workflows en cours ou prototypes
+## Tronc commun du workflow n8n
 
-- Aucun prototype codé dans le dépôt. On prévoit de créer les workflows suivants : qualification des leads, notification des apporteurs, génération de contrats, reporting vers la plateforme clients.
-- Chaque workflow devra respecter les schémas définis par `docs/Cahier des charges - SAAS Apporteur d’Affaires.pdf` (lead → transaction → suivi d’activité).
+1. **Webhook** (POST `/api`, seul point d’entrée).
+2. **Function Normalize Input** : lecture du body, normalisation des fields `entity`/`action`, construction de `routeKey`.
+3. **IF Validate Route** : permet uniquement les routes listées.
+4. **Function + IF Auth Guard** : pour toute route ≠ `auth.login`, vérifie le cookie `session`, parse et vérifie le JWT (8h), injecte `authContext = { email, role_manager, team }`.
+5. **Switch Router** sur `routeKey` vers les sous-branches métier.
 
-## Points bloquants ou techniques
+## Routes métier détaillées
 
-- Les workflows n’existent pas encore : il faut d’abord définir les nœuds (HTTP, webhook, SQL, email) et tester les scénarios manuellement.
-- L’API n8n nécessite une clé sécurisée ; il faut centraliser sa gestion (vault, variables d’environnement, CI/CD).
-- Aucun mécanisme de test automatisé n’est mis en place pour valider les workflows (mocks, fixtures, etc.).
+- **auth.login** : Search Contact HubSpot par email → IF `access_tier == revoked` retourne 403 → Function `bcrypt.compare` → IF false retourne 401 → Function génère JWT (8h) → Update `last_login_at` dans HubSpot → Respond with `ok: true` + `redirect`.
+- **me.profile** : Get Contact par email → Function mappe les champs publics → Respond JSON.
+- **deals.list** (partenaire) : Search Deals filtrés sur `referral_partner_email = contact.email` → Function map + KPI → Respond JSON.
+- **manager.dashboard** : Search Contacts filtrés (`team = manager.team`, `role_manager != true`) → Function extrait les emails partenaires → Split in Batches sur les emails → chaque batch lance Search Deals (filter `referral_partner_email`) → Function agrège les KPI → Respond JSON.
+- **pipeline.kanban** : Fetch deals selon rôle (`referral_partner_email` ou manager) → Function groupe par `dealstage` → Respond JSON.
+- **prospects.list** : Fetch deals selon rôle → Function formate un tableau → Respond JSON.
+- **export.csv / export.pdf** : Chaines d’extraction + `Spreadsheet File` / `Respond to Webhook` pour générer les fichiers.
 
-## Évolutions prévues
+## Nodes n8n requis (liste exacte)
 
-1. Définir et versionner les workflows dans le dépôt (JSON exportés) afin de les rollerbacks facilement.
-2. Implémenter une suite de tests (via n8n-runner ou scripts Node) pour vérifier que les workflows exécutent les étapes critiques.
-3. Automatiser le déploiement des workflows via CI/CD (push automatique après validation).
-4. Documenter les entrées/sorties de chaque workflow pour les consommateurs front-end et API externes.
+- Webhook  
+- Function  
+- IF  
+- Switch  
+- HubSpot  
+- Split In Batches  
+- Spreadsheet File  
+- Cron  
+- Email / SMTP  
+- Respond to Webhook
+
+## Contraintes et sécurité
+
+- Aucun mot de passe ne circule en clair : uniquement `password_hash` comparés via bcrypt.
+- Les erreurs exposées au front sont génériques (anti-enumération).
+- Les cookies de session sont `HttpOnly`.
+- Les accès sont strictement basés sur `role_manager` et `team` dans le workflow.
