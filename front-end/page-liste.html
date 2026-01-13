@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <!-- PAGE TITLE HERE -->
+	<title>Transactions - Vue Liste Manager | Societe2Courtage</title>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="author" content="Dexignlabs">
+	<meta name="robots" content="index, follow">
+	<meta name="keywords" content="transactions, apporteur d'affaires, manager, liste, tableau">
+	<meta name="description" content="Vue liste des transactions pour apporteurs d'affaires et managers">
+	<meta property="og:title" content="Transactions - Vue Liste | Societe2Courtage">
+	<meta property="og:description" content="Gérez vos transactions avec la vue liste">
+	<meta name="format-detection" content="telephone=no">
+
+	<!-- MOBILE SPECIFIC -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- FAVICONS ICON -->
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png">
+	
+	<!-- Datatable -->
+    <link href="vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="vendor/datatables/responsive/responsive.css" rel="stylesheet">
+	<link href="vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+	
+	<!-- Style css -->
+    <link href="css/style.css" rel="stylesheet">
+	
+	<style>
+		.content-body .container-fluid {
+			padding-bottom: 0 !important;
+		}
+		.content-body .row:last-child {
+			margin-bottom: 0 !important;
+		}
+		.content-body {
+			padding-bottom: 0 !important;
+		}
+		.transactions-header {
+			background: #fff;
+			border-bottom: 1px solid #e5e5e5;
+			padding: 1.5rem;
+		}
+		.view-toggle-btn {
+			border: 1px solid #e5e5e5;
+			background: #fff;
+			color: #2f2d2e;
+			padding: 0.5rem 1rem;
+			border-radius: 6px;
+			transition: all 0.3s;
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.view-toggle-btn:hover {
+			background: #f5f5f5;
+			color: #2f2d2e;
+		}
+		.view-toggle-btn.active {
+			background: #4cbebc;
+			color: #fff;
+			border-color: #4cbebc;
+		}
+		.filter-dropdown {
+			border: 1px solid #e5e5e5;
+			background: #fff;
+			padding: 0.5rem 1rem;
+			border-radius: 6px;
+			color: #2f2d2e;
+			font-size: 0.875rem;
+		}
+		.filter-dropdown::after {
+			display: inline-block;
+			margin-left: 0.5rem;
+		}
+		.dropdown-toggle::after {
+			margin-left: 0.5rem;
+		}
+		.search-input {
+			border: 1px solid #e5e5e5;
+			border-radius: 6px;
+			padding: 0.5rem 1rem 0.5rem 2.5rem;
+			font-size: 0.875rem;
+			color: #2f2d2e;
+		}
+		.search-input:focus {
+			border-color: #4cbebc;
+			outline: none;
+			box-shadow: 0 0 0 0.2rem rgba(76, 190, 188, 0.25);
+		}
+		.search-input::placeholder {
+			color: #6c757d;
+		}
+		.transactions-table {
+			background: #fff;
+		}
+		.transactions-table thead {
+			background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%);
+		}
+		.transactions-table thead th {
+			color: #2f2d2e;
+			font-weight: 600;
+			font-size: 0.875rem;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			padding: 1rem;
+			border: none;
+		}
+		.transactions-table tbody td {
+			padding: 1rem;
+			vertical-align: middle;
+			border-top: 1px solid #f5f5f5;
+		}
+		.transactions-table tbody tr {
+			cursor: pointer;
+		}
+		.transactions-table tbody tr:hover {
+			background: rgba(76, 190, 188, 0.05);
+		}
+		.status-badge {
+			padding: 0.25rem 0.75rem;
+			border-radius: 12px;
+			font-size: 0.75rem;
+			font-weight: 600;
+			display: inline-block;
+		}
+		.status-lead { background: rgba(76, 190, 188, 0.15); color: #4cbebc; }
+		.status-scheduled { background: rgba(76, 190, 188, 0.2); color: #2f2d2e; }
+		.status-no-show { background: rgba(47, 45, 46, 0.1); color: #2f2d2e; }
+		.status-no-reply { background: rgba(76, 190, 188, 0.15); color: #2f2d2e; }
+		.status-waiting { background: rgba(76, 190, 188, 0.2); color: #4cbebc; }
+		.status-won { background: rgba(76, 190, 188, 0.25); color: #2f2d2e; }
+		.status-lost { background: rgba(47, 45, 46, 0.15); color: #2f2d2e; }
+		.status-declined { background: rgba(47, 45, 46, 0.15); color: #2f2d2e; }
+		.status-thinking { background: rgba(76, 190, 188, 0.15); color: #2f2d2e; }
+		.amount-text {
+			font-weight: 600;
+			color: #2f2d2e;
+		}
+		.action-icons a {
+			color: #2f2d2e;
+			margin: 0 0.25rem;
+			opacity: 0.6;
+			transition: all 0.3s;
+		}
+		.action-icons a:hover {
+			opacity: 1;
+			color: #4cbebc;
+		}
+		.nav-tabs .nav-link {
+			color: #2f2d2e;
+			border: none;
+			padding: 0.5rem 1rem;
+		}
+		.nav-tabs .nav-link.active {
+			color: #4cbebc;
+			border-bottom: 2px solid #4cbebc;
+			background: transparent;
+		}
+		.nav-tabs .nav-link:hover {
+			border-color: transparent;
+		}
+		/* Pagination style like contacts.html */
+		.dataTables_wrapper .dataTables_paginate {
+			margin-top: 1.5rem;
+		}
+		.dataTables_wrapper .dataTables_paginate .pagination {
+			margin-bottom: 0;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			padding: 0 !important;
+			margin: 0 0.25rem !important;
+			border: none !important;
+			background: transparent !important;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button a {
+			width: 2.5rem;
+			height: 2.5rem;
+			padding: 0;
+			line-height: 2.5rem;
+			border-radius: 50% !important;
+			text-align: center;
+			display: inline-block;
+			background: rgba(255, 255, 255, 0.15);
+			color: #312a2a;
+			border: 0.0625rem solid #e6e6e6;
+			text-decoration: none;
+			transition: all 0.5s;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.current a,
+		.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover a {
+			background: #4cbebc !important;
+			border-color: #4cbebc !important;
+			color: #fff !important;
+			box-shadow: 0 0.625rem 1.25rem 0rem rgba(76, 190, 188, 0.2);
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button:hover a {
+			background: #4cbebc !important;
+			border-color: #4cbebc !important;
+			color: #fff !important;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.disabled a {
+			opacity: 0.5;
+			cursor: not-allowed;
+			background: rgba(255, 255, 255, 0.15);
+			color: #6c757d;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.previous a,
+		.dataTables_wrapper .dataTables_paginate .paginate_button.next a {
+			width: 2.5rem;
+			height: 2.5rem;
+			border-radius: 22px !important;
+			line-height: 2.5rem;
+			background: rgba(76, 190, 188, 0.1);
+			border: 1px solid #4cbebc;
+			color: #4cbebc;
+			font-size: 1.2rem;
+			font-weight: bold;
+			text-indent: -9999px;
+			overflow: hidden;
+			position: relative;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.previous a::before {
+			content: '‹';
+			text-indent: 0;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.next a::before {
+			content: '›';
+			text-indent: 0;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover a,
+		.dataTables_wrapper .dataTables_paginate .paginate_button.next:hover a {
+			background: #4cbebc;
+			color: #fff;
+		}
+		.dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled a,
+		.dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled a {
+			opacity: 0.5;
+			cursor: not-allowed;
+			background: rgba(255, 255, 255, 0.15);
+			border-color: #e6e6e6;
+			color: #6c757d;
+		}
+		.dataTables_wrapper .dataTables_info {
+			color: #2f2d2e;
+			font-weight: 500;
+		}
+		/* Cursor pointer pour les avatars cliquables */
+		.owner-avatar,
+		.apporteur-avatar {
+			cursor: pointer;
+			transition: transform 0.2s;
+		}
+		.owner-avatar:hover,
+		.apporteur-avatar:hover {
+			transform: scale(1.1);
+		}
+		/* Modal de profil */
+		.profile-modal .modal-dialog {
+			margin: 7rem auto 0;
+			max-width: 100%;
+			display: flex;
+			align-items: flex-start;
+			justify-content: center;
+		}
+		.profile-modal .modal-content {
+			border-radius: 16px;
+			border: none;
+			box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+			max-height: calc(100vh - 8rem);
+			display: flex;
+			flex-direction: column;
+			margin: 0 auto;
+			width: 90%;
+			max-width: 600px;
+		}
+		.profile-modal .modal-header {
+			border-bottom: 1px solid #e5e5e5;
+			padding: 1.5rem;
+			flex-shrink: 0;
+		}
+		.profile-modal .modal-body {
+			padding: 2rem;
+			overflow-y: auto;
+			flex: 1;
+		}
+		.profile-modal .profile-image {
+			display: none;
+		}
+		.profile-modal .contact-item {
+			display: flex;
+			align-items: center;
+			padding: 1rem 0;
+			border-bottom: 1px solid #f5f5f5;
+		}
+		.profile-modal .contact-item:last-child {
+			border-bottom: none;
+		}
+		.profile-modal .contact-icon {
+			width: 40px;
+			height: 40px;
+			background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%);
+			border-radius: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-right: 1rem;
+			flex-shrink: 0;
+		}
+		.profile-modal .contact-icon i {
+			color: #4cbebc;
+			font-size: 1.1rem;
+		}
+		.profile-modal .contact-info {
+			flex: 1;
+		}
+		.profile-modal .contact-label {
+			color: #6c757d;
+			font-size: 0.75rem;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			margin-bottom: 0.25rem;
+		}
+		.profile-modal .contact-value {
+			color: #2f2d2e;
+			font-weight: 500;
+			margin: 0;
+		}
+		.profile-modal .contact-link {
+			color: #4cbebc;
+			text-decoration: none;
+			transition: color 0.3s;
+		}
+		.profile-modal .contact-link:hover {
+			color: #3aa8a6;
+		}
+		.transaction-name-cell {
+			display: flex;
+			align-items: center;
+		}
+		/* Photos de profil retirées */
+	</style>
+	
+</head>
+<body>
+
+   
+		
+<div class="content-body default-height">
+            <div class="container-fluid">
+				<!-- Header Section -->
+				<div class="row">
+					<div class="col-12">
+						<div class="transactions-header" style="margin-bottom: 2rem;">
+							<div class="d-flex align-items-center justify-content-between flex-wrap mb-4">
+								<div class="d-flex align-items-center">
+									<h3 class="mb-0 me-3" style="color: #2f2d2e;">Transactions</h3>
+								</div>
+								<div class="d-flex align-items-center gap-2">
+									<div class="dropdown">
+										<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: #4cbebc; border-color: #4cbebc;">
+											Exporter
+										</button>
+										<ul class="dropdown-menu dropdown-menu-end">
+											<li><a class="dropdown-item" href="#" id="exportPDF">PDF</a></li>
+											<li><a class="dropdown-item" href="#" id="exportCSV">CSV</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+						<!-- Filters and Search -->
+						<div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+							<div class="d-flex align-items-center gap-2 flex-wrap">
+								<!-- View Toggle -->
+								<div class="btn-group" role="group" style="border: 1px solid #e5e5e5; border-radius: 6px; overflow: hidden;">
+									<a href="page-kanban.html" class="view-toggle-btn" style="border: none; border-radius: 0;">
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect x="2" y="2" width="4" height="4" rx="1" fill="currentColor"/>
+											<rect x="2" y="8" width="4" height="4" rx="1" fill="currentColor"/>
+											<rect x="8" y="2" width="4" height="4" rx="1" fill="currentColor"/>
+											<rect x="8" y="8" width="4" height="4" rx="1" fill="currentColor"/>
+										</svg>
+									</a>
+									<a href="page-liste.html" class="view-toggle-btn active" style="border: none; border-radius: 0;">
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect x="2" y="2" width="12" height="2" rx="1" fill="currentColor"/>
+											<rect x="2" y="7" width="12" height="2" rx="1" fill="currentColor"/>
+											<rect x="2" y="12" width="12" height="2" rx="1" fill="currentColor"/>
+										</svg>
+									</a>
+								</div>
+
+								<!-- Filter Apporteur d'affaire -->
+								<div class="dropdown">
+									<button class="btn btn-sm filter-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" style="border: 1px solid #e5e5e5; background: #fff; padding: 0.5rem 1rem; border-radius: 6px; color: #2f2d2e; font-size: 0.875rem; min-width: 180px; text-align: left;">
+										Apporteur d'affaires
+									</button>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="#">Apporteur 1</a></li>
+										<li><a class="dropdown-item" href="#">Apporteur 2</a></li>
+									</ul>
+								</div>
+							</div>
+							
+	
+						</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Table Section -->
+				<div class="row">
+					<div class="col-12">
+						<div class="card transactions-table">
+							<div class="card-body p-0">
+								<div class="table-responsive">
+									<table id="transactionsTable" class="table table-hover mb-0" style="width:100%">
+										<thead>
+											<tr>
+												<th>
+													<div class="d-flex align-items-center justify-content-between">
+														<span>NOM DE LA TRANSACTION</span>
+														<div class="d-flex align-items-center gap-1">
+															<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.5;">
+																<path d="M6 2V10M2 6L6 2L10 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+															</svg>
+															<div class="dropdown">
+																<button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown" style="color: #6c757d; text-decoration: none; min-width: auto;">
+																	<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<circle cx="8" cy="4" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="8" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="12" r="1" fill="currentColor"/>
+																	</svg>
+																</button>
+																<ul class="dropdown-menu">
+																	<li><a class="dropdown-item" href="#">Trier</a></li>
+																	<li><a class="dropdown-item" href="#">Filtrer</a></li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</th>
+												<th>
+													<div class="d-flex align-items-center justify-content-between">
+														<span>PHASE DE LA TRANSACTION</span>
+														<div class="d-flex align-items-center gap-1">
+															<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.5;">
+																<path d="M6 2V10M2 6L6 2L10 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+															</svg>
+															<div class="dropdown">
+																<button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown" style="color: #6c757d; text-decoration: none; min-width: auto;">
+																	<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<circle cx="8" cy="4" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="8" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="12" r="1" fill="currentColor"/>
+																	</svg>
+																</button>
+																<ul class="dropdown-menu">
+																	<li><a class="dropdown-item" href="#">Trier</a></li>
+																	<li><a class="dropdown-item" href="#">Filtrer</a></li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</th>
+												<th>
+													<div class="d-flex align-items-center justify-content-between">
+														<span>DATE DE FERMETURE (G...)</span>
+														<div class="d-flex align-items-center gap-1">
+															<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.5;">
+																<path d="M6 2V10M2 6L6 2L10 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+															</svg>
+															<div class="dropdown">
+																<button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown" style="color: #6c757d; text-decoration: none; min-width: auto;">
+																	<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<circle cx="8" cy="4" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="8" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="12" r="1" fill="currentColor"/>
+																	</svg>
+																</button>
+																<ul class="dropdown-menu">
+																	<li><a class="dropdown-item" href="#">Trier</a></li>
+																	<li><a class="dropdown-item" href="#">Filtrer</a></li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</th>
+												<th>
+													<div class="d-flex align-items-center justify-content-between">
+														<span>APPORTEUR D'AFFAIRES</span>
+														<div class="d-flex align-items-center gap-1">
+															<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.5;">
+																<path d="M6 2V10M2 6L6 2L10 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+															</svg>
+															<div class="dropdown">
+																<button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown" style="color: #6c757d; text-decoration: none; min-width: auto;">
+																	<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<circle cx="8" cy="4" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="8" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="12" r="1" fill="currentColor"/>
+																	</svg>
+																</button>
+																<ul class="dropdown-menu">
+																	<li><a class="dropdown-item" href="#">Trier</a></li>
+																	<li><a class="dropdown-item" href="#">Filtrer</a></li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</th>
+												<th>
+													<div class="d-flex align-items-center justify-content-between">
+														<span>COURTIER</span>
+														<div class="d-flex align-items-center gap-1">
+															<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.5;">
+																<path d="M6 2V10M2 6L6 2L10 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+															</svg>
+															<div class="dropdown">
+																<button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown" style="color: #6c757d; text-decoration: none; min-width: auto;">
+																	<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<circle cx="8" cy="4" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="8" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="12" r="1" fill="currentColor"/>
+																	</svg>
+																</button>
+																<ul class="dropdown-menu">
+																	<li><a class="dropdown-item" href="#">Trier</a></li>
+																	<li><a class="dropdown-item" href="#">Filtrer</a></li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</th>
+												<th>
+													<div class="d-flex align-items-center justify-content-between">
+														<span>MONTANT</span>
+														<div class="d-flex align-items-center gap-1">
+															<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.5;">
+																<path d="M6 2V10M2 6L6 2L10 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+															</svg>
+															<div class="dropdown">
+																<button class="btn btn-link p-0" type="button" data-bs-toggle="dropdown" style="color: #6c757d; text-decoration: none; min-width: auto;">
+																	<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+																		<circle cx="8" cy="4" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="8" r="1" fill="currentColor"/>
+																		<circle cx="8" cy="12" r="1" fill="currentColor"/>
+																	</svg>
+																</button>
+																<ul class="dropdown-menu">
+																	<li><a class="dropdown-item" href="#">Trier</a></li>
+																	<li><a class="dropdown-item" href="#">Filtrer</a></li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Vente immobilier Dubai</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-lead">Lead reçu (Apporteur d'...</span></td>
+												<td>Hier à 15:53 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 1</span>
+													</div>
+												</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Jeevanthy Nivert (jeev...</span>
+													</div>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Acquisition entreprise tech Paris</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-declined">Refusé (Apporteur d'affair...</span></td>
+												<td>Hier à 14:07 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 2</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Assurance professionnelle restaurant</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-lead">Lead reçu (Apporteur d'...</span></td>
+												<td>19 nov. 2025 13:34 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 1</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Financement projet immobilier Lyon</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-lead">Lead reçu (Apporteur d'...</span></td>
+												<td>19 nov. 2025 09:34 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 1</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Assurance santé entreprise</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-waiting">En attente de documents (App...</span></td>
+												<td>19 nov. 2025 01:58 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 1</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Crédit professionnel commerce</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-lead">Lead reçu (Apporteur d'...</span></td>
+												<td>19 nov. 2025 01:25 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 2</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Assurance véhicule flotte</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-lead">Lead reçu (Apporteur d'...</span></td>
+												<td>18 nov. 2025 14:52 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 1</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Investissement locatif Marseille</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-lead">Lead reçu (Apporteur d'...</span></td>
+												<td>17 nov. 2025 16:12 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 1</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Assurance responsabilité civile</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-declined">Refusé (Apporteur d'affair...</span></td>
+												<td>23 janv. 2026 12:35 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 2</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Assurance multirisque professionnelle</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-lead">Lead reçu (Apporteur d'...</span></td>
+												<td>12 nov. 2025 17:09 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 1</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Assurance décennale construction</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-lead">Lead reçu (Apporteur d'...</span></td>
+												<td>11 nov. 2025 17:04 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 1</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Financement acquisition hôtel</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-lead">Lead reçu (Apporteur d'...</span></td>
+												<td>11 nov. 2025 16:03 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 1</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+											<tr>
+												<td>
+													<div class="transaction-name-cell">
+														<div class="fw-semibold" style="color: #2f2d2e;">Assurance cyber risques</div>
+													</div>
+												</td>
+												<td><span class="status-badge status-thinking">En réflexion (Apporteur d'affaire...</span></td>
+												<td>26 déc. 2025 10:18 GMT+1</td>
+												<td>
+													<div class="d-flex align-items-center">
+														<span>Apporteur 2</span>
+													</div>
+												</td>
+												<td>
+													<span>Aucun courtier</span>
+												</td>
+												<td><span class="amount-text">--</span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+	<!--**********************************
+        Scripts
+    ***********************************-->
+	<!-- Required vendors -->
+	<script src="vendor/global/global.min.js"></script>
+	<!-- Datatable -->
+    <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/responsive/responsive.js"></script>
+	<script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
+	<script src="js/custom.min.js"></script>
+	<script src="js/dlabnav-init.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			// Initialize DataTable
+			var table = $('#transactionsTable').DataTable({
+				language: {
+					paginate: {
+						next: '›',
+						previous: '‹'
+					},
+					search: "Rechercher:",
+					info: "",
+					infoEmpty: "",
+					infoFiltered: "",
+					emptyTable: "Aucune donnée disponible dans le tableau"
+				},
+				pageLength: 25,
+				lengthChange: false,
+				order: [[2, 'desc']],
+				dom: '<"d-flex align-items-center justify-content-sm-between justify-content-center flex-wrap"<"mb-sm-0 mb-3"f>>rt<"d-flex align-items-center justify-content-sm-between justify-content-center flex-wrap"<"mb-sm-0 mb-3"i><"mb-sm-0 mb-3"p>>',
+				drawCallback: function() {
+					// Update info text to match contacts.html style
+					var info = this.api().page.info();
+					var infoText = 'Affichage ' + (info.start + 1) + ' à ' + info.end + ' sur ' + info.recordsTotal + ' données';
+					$('.dataTables_info').html('<p class="mb-0 text-black">' + infoText + '</p>');
+				}
+			});
+
+			// Custom search input
+			$('#searchInput').on('keyup', function() {
+				table.search(this.value).draw();
+			});
+
+			// Select all checkbox
+			$('#selectAll').on('change', function() {
+				const checkboxes = $('tbody input[type="checkbox"]');
+				checkboxes.prop('checked', this.checked);
+			});
+
+			// Export PDF
+			$('#exportPDF').on('click', function(e) {
+				e.preventDefault();
+				// Utiliser window.print() pour une solution simple
+				window.print();
+			});
+
+			// Export CSV
+			$('#exportCSV').on('click', function(e) {
+				e.preventDefault();
+				// Créer un CSV à partir des données du tableau
+				var csvData = [];
+				
+				// En-têtes
+				var headers = [];
+				table.columns().every(function() {
+					headers.push(this.header().textContent.trim());
+				});
+				csvData.push(headers.map(function(h) { return '"' + h.replace(/"/g, '""') + '"'; }).join(','));
+				
+				// Données
+				table.rows({ search: 'applied' }).every(function() {
+					var row = [];
+					this.nodes().to$().find('td').each(function() {
+						var text = $(this).text().trim();
+						// Nettoyer le texte (enlever les retours à la ligne, etc.)
+						text = text.replace(/\n/g, ' ').replace(/\s+/g, ' ');
+						row.push('"' + text.replace(/"/g, '""') + '"');
+					});
+					csvData.push(row.join(','));
+				});
+				
+				// Créer et télécharger le fichier CSV
+				var csv = csvData.join('\n');
+				var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+				var link = document.createElement('a');
+				var url = URL.createObjectURL(blob);
+				link.setAttribute('href', url);
+				link.setAttribute('download', 'transactions.csv');
+				link.style.visibility = 'hidden';
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+			});
+		});
+	</script>
+
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+	<!-- Modal de profil -->
+	<div class="modal fade profile-modal" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="profileModalLabel" style="color: #2f2d2e; font-weight: 600;">Profil</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="text-center mb-4">
+						<h4 id="modalProfileName" style="color: #2f2d2e; font-weight: 600; margin-bottom: 0.5rem;"></h4>
+						<p id="modalProfileTitle" style="color: #4cbebc; font-weight: 500; margin-bottom: 0;"></p>
+					</div>
+					<hr style="border-color: #e5e5e5; margin: 1.5rem 0;">
+					<!-- Statistiques -->
+					<div class="row mb-4" style="margin: 0 -0.5rem;">
+						<div class="col-4 px-1">
+							<div class="text-center" style="padding: 1rem; background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%); border-radius: 10px;">
+								<div style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Deals</div>
+								<div id="modalDeals" style="color: #4cbebc; font-weight: 600; font-size: 1.5rem;">0</div>
+							</div>
+						</div>
+						<div class="col-4 px-1">
+							<div class="text-center" style="padding: 1rem; background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%); border-radius: 10px;">
+								<div style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Gagnés</div>
+								<div id="modalGagnes" style="color: #4cbebc; font-weight: 600; font-size: 1.5rem;">0</div>
+							</div>
+						</div>
+						<div class="col-4 px-1">
+							<div class="text-center" style="padding: 1rem; background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%); border-radius: 10px;">
+								<div style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">En cours</div>
+								<div id="modalEnCours" style="color: #4cbebc; font-weight: 600; font-size: 1.5rem;">0</div>
+							</div>
+						</div>
+					</div>
+					<hr style="border-color: #e5e5e5; margin: 1.5rem 0;">
+					<div class="contact-item">
+						<div class="contact-icon">
+							<i class="fas fa-phone"></i>
+						</div>
+						<div class="contact-info" style="flex: 1;">
+							<div class="contact-label">Téléphone</div>
+							<a href="#" id="modalPhoneLink" class="contact-value" style="color: #4cbebc; text-decoration: none; font-weight: 500; display: inline-block; transition: color 0.3s;" onmouseover="this.style.color='#3aa8a6'" onmouseout="this.style.color='#4cbebc'">
+								<span id="modalPhone">--</span>
+							</a>
+						</div>
+					</div>
+					<div class="contact-item">
+						<div class="contact-icon">
+							<i class="fas fa-envelope"></i>
+						</div>
+						<div class="contact-info" style="flex: 1;">
+							<div class="contact-label">Email</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<a href="#" id="modalEmailLink" class="contact-value" style="color: #4cbebc; text-decoration: none; font-weight: 500; flex: 1; transition: color 0.3s;" onmouseover="this.style.color='#3aa8a6'" onmouseout="this.style.color='#4cbebc'">
+									<span id="modalEmail">--</span>
+								</a>
+								<button type="button" id="copyEmailBtn" class="btn btn-sm" style="background: #4cbebc; color: white; border: none; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='#3aa8a6'" onmouseout="this.style.background='#4cbebc'" title="Copier l'email">
+									<i class="fas fa-copy"></i> Copier
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Données de profil (à remplacer par des données réelles depuis votre API)
+		const profileData = {
+			'EC': { name: 'Emma Collins', title: 'Apporteur d\'affaires', phone: '+33 6 12 34 56 78', email: 'emma.collins@example.com', facebook: 'https://facebook.com/emma.collins', linkedin: 'https://linkedin.com/in/emma-collins', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face', deals: 12, gagnes: 8, enCours: 4 },
+			'RA': { name: 'Rana Aakash', title: 'Apporteur d\'affaires', phone: '+33 6 23 45 67 89', email: 'rana.aakash@example.com', facebook: 'https://facebook.com/rana.aakash', linkedin: 'https://linkedin.com/in/rana-aakash', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', deals: 15, gagnes: 11, enCours: 4 },
+			'SK': { name: 'Sarah Keeling', title: 'Apporteur d\'affaires', phone: '+33 6 34 56 78 90', email: 'sarah.keeling@example.com', facebook: 'https://facebook.com/sarah.keeling', linkedin: 'https://linkedin.com/in/sarah-keeling', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face', deals: 9, gagnes: 6, enCours: 3 },
+			'AS': { name: 'Abla Safir', title: 'Apporteur d\'affaires', phone: '+33 6 45 67 89 01', email: 'abla.safir@example.com', facebook: 'https://facebook.com/abla.safir', linkedin: 'https://linkedin.com/in/abla-safir', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face', deals: 18, gagnes: 14, enCours: 4 },
+			'LT': { name: 'Lisa Thornton', title: 'Apporteur d\'affaires', phone: '+33 6 56 78 90 12', email: 'lisa.thornton@example.com', facebook: 'https://facebook.com/lisa.thornton', linkedin: 'https://linkedin.com/in/lisa-thornton', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face', deals: 7, gagnes: 4, enCours: 3 },
+			'E': { name: 'Eric', title: 'Apporteur d\'affaires', phone: '+33 6 67 89 01 23', email: 'eric@example.com', facebook: 'https://facebook.com/eric', linkedin: 'https://linkedin.com/in/eric', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face', deals: 10, gagnes: 7, enCours: 3 },
+			'MC': { name: 'Cornelia Mathis', title: 'Apporteur d\'affaires', phone: '+33 6 78 90 12 34', email: 'cornelia.mathis@example.com', facebook: 'https://facebook.com/cornelia.mathis', linkedin: 'https://linkedin.com/in/cornelia-mathis', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face', deals: 14, gagnes: 10, enCours: 4 },
+			'LC': { name: 'Laurie Launay-Cleron', title: 'Apporteur d\'affaires', phone: '+33 6 89 01 23 45', email: 'laurie.launay@example.com', facebook: 'https://facebook.com/laurie.launay', linkedin: 'https://linkedin.com/in/laurie-launay', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face', deals: 11, gagnes: 8, enCours: 3 },
+			'DA': { name: 'Aidan Downing', title: 'Apporteur d\'affaires', phone: '+33 6 90 12 34 56', email: 'aidan.downing@example.com', facebook: 'https://facebook.com/aidan.downing', linkedin: 'https://linkedin.com/in/aidan-downing', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', deals: 13, gagnes: 9, enCours: 4 },
+			'BA': { name: 'Anthony Barbier', title: 'Apporteur d\'affaires', phone: '+33 6 01 23 45 67', email: 'anthony.barbier@example.com', facebook: 'https://facebook.com/anthony.barbier', linkedin: 'https://linkedin.com/in/anthony-barbier', image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop&crop=face', deals: 16, gagnes: 12, enCours: 4 },
+			'GJ': { name: 'Jamie Gillan', title: 'Apporteur d\'affaires', phone: '+33 6 12 34 56 78', email: 'jamie.gillan@example.com', facebook: 'https://facebook.com/jamie.gillan', linkedin: 'https://linkedin.com/in/jamie-gillan', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face', deals: 8, gagnes: 5, enCours: 3 },
+			'GA': { name: 'Alex Gibson', title: 'Apporteur d\'affaires', phone: '+33 6 23 45 67 89', email: 'alex.gibson@example.com', facebook: 'https://facebook.com/alex.gibson', linkedin: 'https://linkedin.com/in/alex-gibson', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', deals: 17, gagnes: 13, enCours: 4 },
+			'MP': { name: 'Paula Mekdeci', title: 'Apporteur d\'affaires', phone: '+33 6 34 56 78 90', email: 'paula.mekdeci@example.com', facebook: 'https://facebook.com/paula.mekdeci', linkedin: 'https://linkedin.com/in/paula-mekdeci', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face', deals: 6, gagnes: 3, enCours: 3 },
+			'Jeevanthy Nivert': { name: 'Jeevanthy Nivert', title: 'Courtier', phone: '+33 6 45 67 89 01', email: 'jeevanthy.nivert@example.com', facebook: 'https://facebook.com/jeevanthy.nivert', linkedin: 'https://linkedin.com/in/jeevanthy-nivert', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face', deals: 20, gagnes: 16, enCours: 4 },
+			'Thomas Nivert': { name: 'Thomas Nivert', title: 'Courtier', phone: '+33 6 45 67 89 02', email: 'thomas.nivert@example.com', facebook: 'https://facebook.com/thomas.nivert', linkedin: 'https://linkedin.com/in/thomas-nivert', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', deals: 15, gagnes: 12, enCours: 3 },
+			'A1': { name: 'Apporteur 1', title: 'Apporteur d\'affaires', phone: '+33 6 56 78 90 12', email: 'apporteur1@example.com', facebook: 'https://facebook.com/apporteur1', linkedin: 'https://linkedin.com/in/apporteur1', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', deals: 12, gagnes: 8, enCours: 4 },
+			'A2': { name: 'Apporteur 2', title: 'Apporteur d\'affaires', phone: '+33 6 67 89 01 23', email: 'apporteur2@example.com', facebook: 'https://facebook.com/apporteur2', linkedin: 'https://linkedin.com/in/apporteur2', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face', deals: 15, gagnes: 11, enCours: 4 },
+			'W': { name: 'William', title: 'Apporteur d\'affaires', phone: '+33 6 78 90 12 34', email: 'william@example.com', facebook: 'https://facebook.com/william', linkedin: 'https://linkedin.com/in/william', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face', deals: 9, gagnes: 6, enCours: 3 },
+			'PG': { name: 'Paul Green', title: 'Apporteur d\'affaires', phone: '+33 6 89 01 23 45', email: 'paul.green@example.com', facebook: 'https://facebook.com/paul.green', linkedin: 'https://linkedin.com/in/paul-green', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face', deals: 11, gagnes: 7, enCours: 4 },
+			'GN': { name: 'George Nelson', title: 'Apporteur d\'affaires', phone: '+33 6 90 12 34 56', email: 'george.nelson@example.com', facebook: 'https://facebook.com/george.nelson', linkedin: 'https://linkedin.com/in/george-nelson', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face', deals: 13, gagnes: 9, enCours: 4 }
+		};
+
+		// Fonction pour ouvrir le modal avec les données du profil
+		function openProfileModal(profileKey) {
+			const profile = profileData[profileKey] || {
+				name: 'Utilisateur',
+				title: 'Apporteur d\'affaires',
+				phone: '+33 6 00 00 00 00',
+				email: 'email@example.com',
+				image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
+				deals: 0,
+				gagnes: 0,
+				enCours: 0
+			};
+
+			$('#modalProfileName').text(profile.name);
+			$('#modalProfileTitle').text(profile.title);
+			$('#modalPhone').text(profile.phone);
+			$('#modalPhoneLink').attr('href', 'tel:' + profile.phone.replace(/\s/g, ''));
+			$('#modalEmail').text(profile.email);
+			$('#modalEmailLink').attr('href', 'mailto:' + profile.email);
+			$('#modalDeals').text(profile.deals || 0);
+			$('#modalGagnes').text(profile.gagnes || 0);
+			$('#modalEnCours').text(profile.enCours || 0);
+			
+			// Fonction pour copier l'email
+			$('#copyEmailBtn').off('click').on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				const email = profile.email;
+				navigator.clipboard.writeText(email).then(function() {
+					const btn = $('#copyEmailBtn');
+					const originalText = btn.html();
+					btn.html('<i class="fas fa-check"></i> Copié!').css('background', '#28a745');
+					setTimeout(function() {
+						btn.html(originalText).css('background', '#4cbebc');
+					}, 2000);
+				}).catch(function(err) {
+					console.error('Erreur lors de la copie:', err);
+					alert('Erreur lors de la copie de l\'email');
+				});
+			});
+
+			var modal = new bootstrap.Modal(document.getElementById('profileModal'));
+			modal.show();
+		}
+
+		// S'assurer que la page reste en haut au chargement
+		window.addEventListener('load', function() {
+			window.scrollTo(0, 0);
+		});
+		
+		// Clic sur les lignes du tableau pour ouvrir la fiche du courtier
+		$(document).ready(function() {
+			// S'assurer que la page reste en haut
+			window.scrollTo(0, 0);
+			// Utiliser la délégation d'événements pour gérer les clics sur toutes les lignes, même après le redraw de DataTables
+			$(document).on('click', '#transactionsTable tbody tr', function(e) {
+				// Ne pas ouvrir si on clique sur un lien, un bouton, un dropdown ou une checkbox
+				if ($(e.target).closest('a, button, .dropdown, input[type="checkbox"]').length) {
+					return;
+				}
+				
+				// Trouver la colonne du courtier (5ème colonne, index 4)
+				const courtierCell = $(this).find('td').eq(4);
+				const courtierText = courtierCell.text().trim();
+				
+				// Trouver aussi la colonne de l'apporteur d'affaires (4ème colonne, index 3)
+				const apporteurCell = $(this).find('td').eq(3);
+				const apporteurText = apporteurCell.text().trim();
+				
+				// Vérifier si un courtier est assigné
+				if (courtierText && courtierText !== 'Aucun courtier') {
+					// Extraire le nom du courtier (enlever les parenthèses et points de suspension)
+					let courtierName = courtierText;
+					// Si le texte contient des parenthèses, prendre seulement la partie avant
+					if (courtierText.indexOf('(') > -1) {
+						courtierName = courtierText.substring(0, courtierText.indexOf('(')).trim();
+					}
+					// Si le texte contient des points de suspension, prendre seulement la partie avant
+					if (courtierText.indexOf('...') > -1) {
+						courtierName = courtierText.substring(0, courtierText.indexOf('...')).trim();
+					}
+					
+					// Ouvrir le modal avec le nom du courtier
+					openProfileModal(courtierName);
+				} else if (apporteurText) {
+					// Si pas de courtier, ouvrir le profil de l'apporteur d'affaires
+					// Extraire le nom de l'apporteur
+					let apporteurName = apporteurText;
+					// Si le texte contient des parenthèses, prendre seulement la partie avant
+					if (apporteurText.indexOf('(') > -1) {
+						apporteurName = apporteurText.substring(0, apporteurText.indexOf('(')).trim();
+					}
+					// Si le texte contient des points de suspension, prendre seulement la partie avant
+					if (apporteurText.indexOf('...') > -1) {
+						apporteurName = apporteurText.substring(0, apporteurText.indexOf('...')).trim();
+					}
+					
+					// Mapper les noms d'apporteurs aux clés du profileData
+					let profileKey = apporteurName;
+					if (apporteurName === 'Apporteur 1') {
+						profileKey = 'A1';
+					} else if (apporteurName === 'Apporteur 2') {
+						profileKey = 'A2';
+					}
+					
+					// Ouvrir le modal avec le nom de l'apporteur
+					openProfileModal(profileKey);
+				}
+			});
+		});
+	</script>
+
+</body>
+</html>

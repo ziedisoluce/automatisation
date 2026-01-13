@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <!-- PAGE TITLE HERE -->
+	<title>Transactions - Vue Kanban Manager | Societe2Courtage</title>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="author" content="Dexignlabs">
+	<meta name="robots" content="index, follow">
+	<meta name="keywords" content="transactions, apporteur d'affaires, kanban, vue kanban">
+	<meta name="description" content="Vue Kanban des transactions pour apporteurs d'affaires">
+	<meta property="og:title" content="Transactions - Vue Kanban Apporteur | Societe2Courtage">
+	<meta property="og:description" content="Gérez vos transactions avec la vue Kanban">
+	<meta name="format-detection" content="telephone=no">
+
+	<!-- MOBILE SPECIFIC -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- FAVICONS ICON -->
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png">
+	<link href="vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+	
+	<!-- Style css -->
+    <link href="css/style.css" rel="stylesheet">
+	
+	<style>
+		.content-body .container-fluid {
+			padding-bottom: 0 !important;
+		}
+		.content-body .row:last-child {
+			margin-bottom: 0 !important;
+		}
+		.content-body {
+			padding-bottom: 0 !important;
+		}
+		.content-body .row {
+			margin-bottom: 0 !important;
+		}
+		.kanban-board {
+			margin-bottom: 0 !important;
+		}
+		#main-wrapper {
+			padding-bottom: 0 !important;
+		}
+		.col-12 {
+			margin-bottom: 0 !important;
+		}
+		.kanban-board-container {
+			margin-bottom: 0 !important;
+		}
+		.content-body .container-fluid > .row {
+			margin-bottom: 0 !important;
+		}
+		.content-body .container-fluid > .row > .col-12 {
+			margin-bottom: 0 !important;
+			padding-bottom: 0 !important;
+		}
+		.transactions-header {
+			background: #fff;
+			border-bottom: 1px solid #e5e5e5;
+			padding: 1.5rem;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+		}
+		.view-toggle-btn {
+			border: 1px solid #e5e5e5;
+			background: #fff;
+			color: #2f2d2e;
+			padding: 0.5rem 1rem;
+			border-radius: 6px;
+			transition: all 0.3s;
+			text-decoration: none;
+		}
+		.view-toggle-btn:hover {
+			background: #f5f5f5;
+		}
+		.view-toggle-btn.active {
+			background: #4cbebc;
+			color: #fff;
+			border-color: #4cbebc;
+		}
+		.filter-dropdown {
+			border: 1px solid #e5e5e5;
+			background: #fff;
+			padding: 0.5rem 1rem;
+			border-radius: 6px;
+			color: #2f2d2e;
+			font-size: 0.875rem;
+		}
+		.search-input {
+			border: 1px solid #e5e5e5;
+			border-radius: 6px;
+			padding: 0.5rem 1rem 0.5rem 2.5rem;
+		}
+		.kanban-board {
+			display: flex;
+			overflow-x: auto;
+			gap: 1rem;
+			padding: 1rem 0 0 0;
+			min-height: 600px;
+			margin-bottom: 0 !important;
+		}
+		.kanban-column {
+			min-width: 300px;
+			width: 300px;
+			background: #f8f9fa;
+			border-radius: 8px;
+			padding: 1rem;
+			display: flex;
+			flex-direction: column;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+		}
+		.kanban-column-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 1rem;
+			padding-bottom: 0.75rem;
+			border-bottom: 2px solid #e5e5e5;
+		}
+		.kanban-column-title {
+			font-weight: 600;
+			color: #2f2d2e;
+			font-size: 0.875rem;
+		}
+		.kanban-column-count {
+			background: #e5e5e5;
+			color: #2f2d2e;
+			padding: 0.25rem 0.5rem;
+			border-radius: 12px;
+			font-size: 0.75rem;
+			font-weight: 600;
+			margin-left: 0.5rem;
+		}
+		.kanban-column-nav {
+			display: flex;
+			gap: 0.25rem;
+		}
+		.kanban-column-nav button {
+			background: transparent;
+			border: none;
+			color: #2f2d2e;
+			cursor: pointer;
+			padding: 0.25rem;
+			opacity: 0.6;
+			transition: opacity 0.3s;
+		}
+		.kanban-column-nav button:hover {
+			opacity: 1;
+		}
+		.kanban-cards {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+		.kanban-card {
+			background: #fff;
+			border-radius: 8px;
+			padding: 1rem;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+			cursor: move;
+			transition: box-shadow 0.3s, transform 0.2s;
+			user-select: none;
+		}
+		.kanban-card:hover {
+			box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+		}
+		/* Drag & drop désactivé */
+		/* .kanban-card.dragging {
+			opacity: 0.5;
+			transform: rotate(2deg);
+			box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+		}
+		.kanban-cards.drag-over {
+			background: rgba(76, 190, 188, 0.1);
+			border-radius: 8px;
+			min-height: 100px;
+		}
+		.kanban-cards.drag-over::before {
+			content: "Déposer ici";
+			display: block;
+			text-align: center;
+			color: #4cbebc;
+			font-size: 0.875rem;
+			font-weight: 600;
+			padding: 1rem;
+			border: 2px dashed #4cbebc;
+			border-radius: 8px;
+			margin-bottom: 0.75rem;
+		} */
+		.kanban-card-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 0.75rem;
+		}
+		.kanban-card-title {
+			font-weight: 600;
+			color: #2f2d2e;
+			font-size: 0.875rem;
+			margin: 0;
+		}
+		/* Photos de profil retirées */
+		/* Modal de profil */
+		.profile-modal .modal-dialog {
+			margin: 7rem auto 0;
+			max-width: 100%;
+			display: flex;
+			align-items: flex-start;
+			justify-content: center;
+		}
+		.profile-modal .modal-content {
+			border-radius: 16px;
+			border: none;
+			box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+			max-height: calc(100vh - 8rem);
+			display: flex;
+			flex-direction: column;
+			margin: 0 auto;
+			width: 90%;
+			max-width: 600px;
+		}
+		.profile-modal .modal-header {
+			border-bottom: 1px solid #e5e5e5;
+			padding: 1.5rem;
+			flex-shrink: 0;
+		}
+		.profile-modal .modal-body {
+			padding: 2rem;
+			overflow-y: auto;
+			flex: 1;
+		}
+		.profile-modal .profile-image {
+			display: none;
+		}
+		.profile-modal .contact-item {
+			display: flex;
+			align-items: center;
+			padding: 1rem 0;
+			border-bottom: 1px solid #f5f5f5;
+		}
+		.profile-modal .contact-item:last-child {
+			border-bottom: none;
+		}
+		.profile-modal .contact-icon {
+			width: 40px;
+			height: 40px;
+			background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%);
+			border-radius: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-right: 1rem;
+			flex-shrink: 0;
+		}
+		.profile-modal .contact-icon i {
+			color: #4cbebc;
+			font-size: 1.1rem;
+		}
+		.profile-modal .contact-info {
+			flex: 1;
+		}
+		.profile-modal .contact-label {
+			color: #6c757d;
+			font-size: 0.75rem;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			margin-bottom: 0.25rem;
+		}
+		.profile-modal .contact-value {
+			color: #2f2d2e;
+			font-weight: 500;
+			margin: 0;
+		}
+		.profile-modal .contact-link {
+			color: #4cbebc;
+			text-decoration: none;
+			transition: color 0.3s;
+		}
+		.profile-modal .contact-link:hover {
+			color: #3aa8a6;
+		}
+		.kanban-card-info {
+			font-size: 0.75rem;
+			color: #6c757d;
+			margin: 0.25rem 0;
+		}
+		.kanban-card-amount {
+			font-weight: 600;
+			color: #2f2d2e;
+			font-size: 0.875rem;
+			margin: 0.5rem 0;
+		}
+		/* Actions retirées */
+		.kanban-column-footer {
+			margin-top: 1rem;
+			padding-top: 0.75rem;
+			border-top: 2px solid #e5e5e5;
+			font-size: 0.75rem;
+			color: #6c757d;
+		}
+		.kanban-column-footer-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 0.25rem 0;
+		}
+		.kanban-column-footer-amount {
+			font-weight: 600;
+			color: #2f2d2e;
+		}
+	</style>
+	
+</head>
+<body>
+
+    
+		
+		<!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body default-height">
+            <div class="container-fluid">
+				<!-- Header Section -->
+				<div class="row">
+					<div class="col-12">
+						<div class="transactions-header">
+							<div class="d-flex align-items-center justify-content-between flex-wrap mb-4">
+								<div class="d-flex align-items-center">
+									<h3 class="mb-0 me-3" style="color: #2f2d2e;">Transactions</h3>
+								</div>
+								<div class="d-flex align-items-center gap-2">
+									<div class="dropdown">
+										<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: #4cbebc; border-color: #4cbebc;">
+											Exporter
+										</button>
+										<ul class="dropdown-menu dropdown-menu-end">
+											<li><a class="dropdown-item" href="#" id="exportPDF">PDF</a></li>
+											<li><a class="dropdown-item" href="#" id="exportCSV">CSV</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+
+							<!-- Filters and Search -->
+							<div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
+								<div class="d-flex align-items-center gap-2 flex-wrap">
+									<!-- View Toggle -->
+									<div class="btn-group" role="group">
+										<a href="page-kanban.html" class="view-toggle-btn active">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect x="2" y="2" width="4" height="4" rx="1" fill="currentColor"/>
+												<rect x="2" y="8" width="4" height="4" rx="1" fill="currentColor"/>
+												<rect x="8" y="2" width="4" height="4" rx="1" fill="currentColor"/>
+												<rect x="8" y="8" width="4" height="4" rx="1" fill="currentColor"/>
+											</svg>
+										</a>
+										<a href="page-liste.html" class="view-toggle-btn">
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect x="2" y="2" width="12" height="2" rx="1" fill="currentColor"/>
+												<rect x="2" y="7" width="12" height="2" rx="1" fill="currentColor"/>
+												<rect x="2" y="12" width="12" height="2" rx="1" fill="currentColor"/>
+											</svg>
+										</a>
+									</div>
+
+									<!-- Filter Apporteur d'affaire -->
+									<select class="filter-dropdown">
+										<option>Apporteur d'affaires</option>
+										<option>Apporteur 1</option>
+										<option>Apporteur 2</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Kanban Board -->
+				<div class="row">
+					<div class="col-12">
+						<div class="kanban-board">
+							<!-- Column 1: Lead reçu -->
+							<div class="kanban-column" data-column-name="lead-received">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">Lead reçu</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="lead-received">
+									<div class="kanban-card" data-card-id="card-1">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Vente immobilier Dubai</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: Lead reçu</div>
+										<div class="kanban-card-info">Date de fermeture: 26/11/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 1</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 125 000 €</div>
+										<div class="kanban-card-info">Date de création: 26/11/2025</div>
+										</div>
+									</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+											</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+										</div>
+										</div>
+									</div>
+
+							<!-- Column 2: Qualification -->
+							<div class="kanban-column" data-column-name="qualification">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">Qualification</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="qualification">
+									<div class="kanban-card" data-card-id="card-2">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Acquisition entreprise tech Paris</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: Qualification</div>
+										<div class="kanban-card-info">Date de fermeture: 19/11/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 2</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 95 000 €</div>
+										<div class="kanban-card-info">Date de création: 19/11/2025</div>
+									</div>
+								</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+									</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Column 3: Appel programmé -->
+							<div class="kanban-column" data-column-name="call-scheduled">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">Appel programmé</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="call-scheduled">
+									<div class="kanban-card" data-card-id="card-3">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Assurance professionnelle restaurant</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: Appel programmé</div>
+										<div class="kanban-card-info">Date de fermeture: 20/11/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 1</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 180 000 €</div>
+										<div class="kanban-card-info">Date de création: 19/11/2025</div>
+									</div>
+								</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+									</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Column 4: Proposition envoyée -->
+							<div class="kanban-column" data-column-name="proposition-sent">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">Proposition envoyée</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="proposition-sent">
+									<div class="kanban-card" data-card-id="card-4">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Financement projet immobilier</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: Proposition envoyée</div>
+										<div class="kanban-card-info">Date de fermeture: 25/11/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 2</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 250 000 €</div>
+										<div class="kanban-card-info">Date de création: 18/11/2025</div>
+										</div>
+								</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+									</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Column 5: Négociation -->
+							<div class="kanban-column" data-column-name="negotiation">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">Négociation</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="negotiation">
+									<div class="kanban-card" data-card-id="card-5">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Rachat crédit immobilier</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: Négociation</div>
+										<div class="kanban-card-info">Date de fermeture: 28/11/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 1</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 320 000 €</div>
+										<div class="kanban-card-info">Date de création: 17/11/2025</div>
+									</div>
+								</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+									</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Column 6: En attente de documents -->
+							<div class="kanban-column" data-column-name="waiting-documents">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">En attente de documents</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="waiting-documents">
+									<div class="kanban-card" data-card-id="card-6">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Assurance vie entreprise</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: En attente de documents</div>
+										<div class="kanban-card-info">Date de fermeture: 30/11/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 2</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 150 000 €</div>
+										<div class="kanban-card-info">Date de création: 16/11/2025</div>
+										</div>
+									</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+									</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Column 7: Validation -->
+							<div class="kanban-column" data-column-name="validation">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">Validation</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="validation">
+									<div class="kanban-card" data-card-id="card-7">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Prêt professionnel expansion</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: Validation</div>
+										<div class="kanban-card-info">Date de fermeture: 02/12/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 1</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 400 000 €</div>
+										<div class="kanban-card-info">Date de création: 15/11/2025</div>
+										</div>
+								</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+									</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Column 8: Signature -->
+							<div class="kanban-column" data-column-name="signature">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">Signature</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="signature">
+									<div class="kanban-card" data-card-id="card-8">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Crédit bail véhicule entreprise</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: Signature</div>
+										<div class="kanban-card-info">Date de fermeture: 05/12/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 2</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 85 000 €</div>
+										<div class="kanban-card-info">Date de création: 14/11/2025</div>
+									</div>
+								</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+									</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Column 9: Clôture -->
+							<div class="kanban-column" data-column-name="cloture">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">Clôture</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="cloture">
+									<div class="kanban-card" data-card-id="card-9">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Assurance décès invalidité</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: Clôture</div>
+										<div class="kanban-card-info">Date de fermeture: 10/12/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 1</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 200 000 €</div>
+										<div class="kanban-card-info">Date de création: 13/11/2025</div>
+										</div>
+								</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+									</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							<!-- Column 10: Suivi post-clôture -->
+							<div class="kanban-column" data-column-name="suivi-post-cloture">
+								<div class="kanban-column-header">
+									<div class="d-flex align-items-center">
+										<span class="kanban-column-title">Suivi post-clôture</span>
+										<span class="kanban-column-count">1</span>
+									</div>
+									<div class="kanban-column-nav">
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+										<button><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+									</div>
+								</div>
+								<div class="kanban-cards" data-column="suivi-post-cloture">
+									<div class="kanban-card" data-card-id="card-10">
+										<div class="kanban-card-header">
+											<div class="d-flex align-items-center">
+												<h6 class="kanban-card-title mb-0">Prêt relais immobilier</h6>
+											</div>
+										</div>
+										<div class="kanban-card-info" style="font-weight: 600; color: #4cbebc;">Phase: Suivi post-clôture</div>
+										<div class="kanban-card-info">Date de fermeture: 15/12/2025</div>
+										<div class="kanban-card-info">Apporteur d'affaires: Apporteur 2</div>
+										<div class="kanban-card-info">Courtier: Jeevanthy Nivert</div>
+										<div class="kanban-card-amount">Montant: 275 000 €</div>
+										<div class="kanban-card-info">Date de création: 12/11/2025</div>
+									</div>
+								</div>
+								<div class="kanban-column-footer">
+									<div class="kanban-column-footer-row">
+										<span class="kanban-column-footer-amount">0 € | Montant total</span>
+									</div>
+									<div class="kanban-column-footer-row">
+										<span>Perdu (0%)</span>
+										<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.5;">
+											<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+											<path d="M8 5V8M8 11H8.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+		
+		
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+	<!--**********************************
+        Scripts
+    ***********************************-->
+	<!-- Required vendors -->
+	<script src="vendor/global/global.min.js"></script>
+	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="js/custom.min.js"></script>
+	<script src="js/dlabnav-init.js"></script>
+	<script src="js/demo.js"></script>
+	<script src="js/styleSwitcher.js"></script>
+
+	<script>
+		// Fonction pour extraire le montant d'une carte
+		function extractAmountFromCard(card) {
+			const amountElement = card.querySelector('.kanban-card-amount');
+			if (amountElement) {
+				const text = amountElement.textContent;
+				const match = text.match(/[\d\s]+€/);
+				if (match) {
+					// Enlever les espaces et convertir en nombre
+					const amountStr = match[0].replace(/\s/g, '').replace('€', '');
+					return parseInt(amountStr) || 0;
+				}
+			}
+			return 0;
+		}
+
+		// Fonction pour formater le montant
+		function formatAmount(amount) {
+			return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0 }).format(amount);
+		}
+
+		// Fonction pour mettre à jour les compteurs et montants de colonnes
+		function updateColumnCounts() {
+			document.querySelectorAll('.kanban-column').forEach(column => {
+				const cardsContainer = column.querySelector('.kanban-cards');
+				const countElement = column.querySelector('.kanban-column-count');
+				const footerAmountElement = column.querySelector('.kanban-column-footer-amount');
+				
+				if (cardsContainer && countElement) {
+					const cards = cardsContainer.querySelectorAll('.kanban-card');
+					const cardCount = cards.length;
+					countElement.textContent = cardCount;
+					
+					// Calculer le montant total
+					let totalAmount = 0;
+					cards.forEach(card => {
+						totalAmount += extractAmountFromCard(card);
+					});
+					
+					// Mettre à jour le footer avec le montant total
+					if (footerAmountElement) {
+						footerAmountElement.textContent = formatAmount(totalAmount) + ' | Montant total';
+					} else {
+						// Si l'élément n'existe pas, le créer ou mettre à jour le span existant
+						const footerRow = column.querySelector('.kanban-column-footer-row');
+						if (footerRow) {
+							const existingSpan = footerRow.querySelector('span');
+							if (existingSpan) {
+								existingSpan.textContent = formatAmount(totalAmount) + ' | Montant total';
+							}
+						}
+					}
+				}
+			});
+		}
+
+		// Drag & drop désactivé
+		/* Variables globales pour le drag and drop
+		let draggedCard = null;
+		let draggedFromColumn = null;
+
+		// Initialiser le drag and drop pour toutes les cartes
+		document.addEventListener('DOMContentLoaded', function() {
+			// Ajouter les événements drag aux cartes
+			document.querySelectorAll('.kanban-card').forEach(card => {
+				card.addEventListener('dragstart', handleDragStart);
+				card.addEventListener('dragend', handleDragEnd);
+			});
+
+			// Ajouter les événements drop aux colonnes
+			document.querySelectorAll('.kanban-cards').forEach(column => {
+				column.addEventListener('dragover', handleDragOver);
+				column.addEventListener('drop', handleDrop);
+				column.addEventListener('dragenter', handleDragEnter);
+				column.addEventListener('dragleave', handleDragLeave);
+			});
+
+			// Initialiser les compteurs et montants
+			updateColumnCounts();
+		});
+
+		function handleDragStart(e) {
+			draggedCard = this;
+			draggedFromColumn = this.closest('.kanban-cards');
+			this.classList.add('dragging');
+			e.dataTransfer.effectAllowed = 'move';
+			e.dataTransfer.setData('text/html', this.innerHTML);
+		}
+
+		function handleDragEnd(e) {
+			this.classList.remove('dragging');
+			// Retirer la classe drag-over de toutes les colonnes
+			document.querySelectorAll('.kanban-cards').forEach(col => {
+				col.classList.remove('drag-over');
+			});
+		}
+
+		function handleDragOver(e) {
+			if (e.preventDefault) {
+				e.preventDefault();
+			}
+			e.dataTransfer.dropEffect = 'move';
+			return false;
+		}
+
+		function handleDragEnter(e) {
+			if (this !== draggedFromColumn) {
+				this.classList.add('drag-over');
+			}
+		}
+
+		function handleDragLeave(e) {
+			this.classList.remove('drag-over');
+		}
+
+		function handleDrop(e) {
+			if (e.stopPropagation) {
+				e.stopPropagation();
+			}
+
+			// Ne rien faire si on dépose dans la même colonne
+			if (this === draggedFromColumn) {
+				return false;
+			}
+
+			// Déplacer la carte
+			if (draggedCard) {
+				this.appendChild(draggedCard);
+				this.classList.remove('drag-over');
+				
+				// Mettre à jour la phase dans la carte selon la nouvelle colonne
+				const columnName = this.dataset.column;
+				let phaseName = '';
+				if (columnName === 'lead-received') phaseName = 'Lead reçu';
+				else if (columnName === 'qualification') phaseName = 'Qualification';
+				else if (columnName === 'call-scheduled') phaseName = 'Appel programmé';
+				else if (columnName === 'proposition-sent') phaseName = 'Proposition envoyée';
+				else if (columnName === 'negotiation') phaseName = 'Négociation';
+				else if (columnName === 'waiting-documents') phaseName = 'En attente de documents';
+				else if (columnName === 'validation') phaseName = 'Validation';
+				else if (columnName === 'signature') phaseName = 'Signature';
+				else if (columnName === 'cloture') phaseName = 'Clôture';
+				else if (columnName === 'suivi-post-cloture') phaseName = 'Suivi post-clôture';
+				
+				// Mettre à jour la phase dans la carte
+				const phaseElement = draggedCard.querySelector('.kanban-card-info[style*="color: #4cbebc"]');
+				if (phaseElement) {
+					phaseElement.textContent = 'Phase: ' + phaseName;
+				}
+				
+				// Mettre à jour les compteurs et montants
+				updateColumnCounts();
+				
+				// Ici vous pouvez ajouter un appel API pour sauvegarder le changement
+				// saveCardPosition(draggedCard.dataset.cardId, this.dataset.column);
+			}
+
+			return false;
+		}
+
+		// Fonction optionnelle pour sauvegarder la position (à implémenter selon votre backend)
+		function saveCardPosition(cardId, newColumn) {
+			// Exemple d'appel API
+			// fetch('/api/update-card-position', {
+			//     method: 'POST',
+			//     headers: { 'Content-Type': 'application/json' },
+			//     body: JSON.stringify({ cardId, newColumn })
+			// });
+			console.log(`Card ${cardId} moved to column ${newColumn}`);
+		} */
+
+		// Initialiser les compteurs et montants (sans drag & drop)
+		document.addEventListener('DOMContentLoaded', function() {
+			updateColumnCounts();
+			// S'assurer que la page reste en haut
+			window.scrollTo(0, 0);
+		});
+		
+		// S'assurer que la page reste en haut au chargement
+		window.addEventListener('load', function() {
+			window.scrollTo(0, 0);
+		});
+
+		// Export PDF
+		document.getElementById('exportPDF').addEventListener('click', function(e) {
+			e.preventDefault();
+			// Utiliser window.print() pour une solution simple
+			window.print();
+		});
+
+		// Export CSV
+		document.getElementById('exportCSV').addEventListener('click', function(e) {
+			e.preventDefault();
+			// Collecter toutes les cartes Kanban
+			var cards = document.querySelectorAll('.kanban-card');
+			var csvData = [];
+			
+			// En-têtes
+			csvData.push(['Transaction', 'Phase', 'Date de fermeture', 'Apporteur d\'affaires', 'Courtier', 'Montant', 'Date de création'].join(','));
+			
+			// Données des cartes
+			cards.forEach(function(card) {
+				var title = card.querySelector('.kanban-card-title') ? card.querySelector('.kanban-card-title').textContent.trim() : '';
+				var infos = card.querySelectorAll('.kanban-card-info');
+				var amountElement = card.querySelector('.kanban-card-amount');
+				var dateFermeture = '';
+				var apporteur = '';
+				var courtier = '';
+				var montant = '';
+				var dateCreation = '';
+				
+				// Extraire les informations depuis les divs kanban-card-info
+				var phase = '';
+				infos.forEach(function(info) {
+					var text = info.textContent.trim();
+					if (text.startsWith('Phase:')) {
+						phase = text.replace('Phase: ', '').trim();
+					} else if (text.startsWith('Date de fermeture:')) {
+						dateFermeture = text.replace('Date de fermeture: ', '').trim();
+					} else if (text.startsWith('Apporteur d\'affaires:')) {
+						apporteur = text.replace('Apporteur d\'affaires: ', '').trim();
+					} else if (text.startsWith('Courtier:')) {
+						courtier = text.replace('Courtier: ', '').trim();
+					} else if (text.startsWith('Date de création:')) {
+						dateCreation = text.replace('Date de création: ', '').trim();
+					}
+				});
+				
+				// Si la phase n'a pas été trouvée dans les infos, utiliser le nom de la colonne
+				if (!phase) {
+					if (column === 'lead-received') phase = 'Lead reçu';
+					else if (column === 'qualification') phase = 'Qualification';
+					else if (column === 'call-scheduled') phase = 'Appel programmé';
+					else if (column === 'proposition-sent') phase = 'Proposition envoyée';
+					else if (column === 'negotiation') phase = 'Négociation';
+					else if (column === 'waiting-documents') phase = 'En attente de documents';
+					else if (column === 'validation') phase = 'Validation';
+					else if (column === 'signature') phase = 'Signature';
+					else if (column === 'cloture') phase = 'Clôture';
+					else if (column === 'suivi-post-cloture') phase = 'Suivi post-clôture';
+				}
+				
+				// Extraire le montant
+				if (amountElement) {
+					montant = amountElement.textContent.replace('Montant: ', '').trim();
+				}
+				
+				// Extraire la phase (nom de la colonne) si pas déjà extraite
+				var column = card.closest('.kanban-cards') ? card.closest('.kanban-cards').dataset.column : '';
+				if (!phase) {
+					if (column === 'lead-received') phase = 'Lead reçu';
+					else if (column === 'qualification') phase = 'Qualification';
+					else if (column === 'call-scheduled') phase = 'Appel programmé';
+					else if (column === 'proposition-sent') phase = 'Proposition envoyée';
+					else if (column === 'negotiation') phase = 'Négociation';
+					else if (column === 'waiting-documents') phase = 'En attente de documents';
+					else if (column === 'validation') phase = 'Validation';
+					else if (column === 'signature') phase = 'Signature';
+					else if (column === 'cloture') phase = 'Clôture';
+					else if (column === 'suivi-post-cloture') phase = 'Suivi post-clôture';
+				}
+				
+				csvData.push([title, phase, dateFermeture, apporteur, courtier, montant, dateCreation].map(function(cell) {
+					return '"' + cell.replace(/"/g, '""') + '"';
+				}).join(','));
+			});
+			
+			// Créer et télécharger le fichier CSV
+			var csv = csvData.join('\n');
+			var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+			var link = document.createElement('a');
+			var url = URL.createObjectURL(blob);
+			link.setAttribute('href', url);
+			link.setAttribute('download', 'transactions-kanban.csv');
+			link.style.visibility = 'hidden';
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		});
+
+		// Données de profil (à remplacer par des données réelles depuis votre API)
+		const profileData = {
+			'EC': { name: 'Emma Collins', title: 'Apporteur d\'affaires', phone: '+33 6 12 34 56 78', email: 'emma.collins@example.com', facebook: 'https://facebook.com/emma.collins', linkedin: 'https://linkedin.com/in/emma-collins', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face', deals: 12, gagnes: 8, enCours: 4 },
+			'SK': { name: 'Sarah Keeling', title: 'Apporteur d\'affaires', phone: '+33 6 34 56 78 90', email: 'sarah.keeling@example.com', facebook: 'https://facebook.com/sarah.keeling', linkedin: 'https://linkedin.com/in/sarah-keeling', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face', deals: 9, gagnes: 6, enCours: 3 },
+			'AS': { name: 'Abla Safir', title: 'Apporteur d\'affaires', phone: '+33 6 45 67 89 01', email: 'abla.safir@example.com', facebook: 'https://facebook.com/abla.safir', linkedin: 'https://linkedin.com/in/abla-safir', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face', deals: 18, gagnes: 14, enCours: 4 },
+			'W': { name: 'William', title: 'Apporteur d\'affaires', phone: '+33 6 78 90 12 34', email: 'william@example.com', facebook: 'https://facebook.com/william', linkedin: 'https://linkedin.com/in/william', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face', deals: 9, gagnes: 6, enCours: 3 },
+			'PG': { name: 'Paul Green', title: 'Apporteur d\'affaires', phone: '+33 6 89 01 23 45', email: 'paul.green@example.com', facebook: 'https://facebook.com/paul.green', linkedin: 'https://linkedin.com/in/paul-green', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face', deals: 11, gagnes: 7, enCours: 4 },
+			'GN': { name: 'George Nelson', title: 'Apporteur d\'affaires', phone: '+33 6 90 12 34 56', email: 'george.nelson@example.com', facebook: 'https://facebook.com/george.nelson', linkedin: 'https://linkedin.com/in/george-nelson', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face', deals: 13, gagnes: 9, enCours: 4 },
+			'LT': { name: 'Lisa Thornton', title: 'Apporteur d\'affaires', phone: '+33 6 56 78 90 12', email: 'lisa.thornton@example.com', facebook: 'https://facebook.com/lisa.thornton', linkedin: 'https://linkedin.com/in/lisa-thornton', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face', deals: 7, gagnes: 4, enCours: 3 },
+			'Jeevanthy Nivert': { name: 'Jeevanthy Nivert', title: 'Courtier', phone: '+33 6 45 67 89 01', email: 'jeevanthy.nivert@example.com', facebook: 'https://facebook.com/jeevanthy.nivert', linkedin: 'https://linkedin.com/in/jeevanthy-nivert', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face', deals: 20, gagnes: 16, enCours: 4 },
+			'Thomas Nivert': { name: 'Thomas Nivert', title: 'Courtier', phone: '+33 6 45 67 89 02', email: 'thomas.nivert@example.com', facebook: 'https://facebook.com/thomas.nivert', linkedin: 'https://linkedin.com/in/thomas-nivert', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', deals: 15, gagnes: 12, enCours: 3 }
+		};
+
+		// Fonction pour ouvrir le modal avec les données du profil
+		function openProfileModal(profileKey) {
+			const profile = profileData[profileKey] || {
+				name: 'Utilisateur',
+				title: 'Apporteur d\'affaires',
+				phone: '+33 6 00 00 00 00',
+				email: 'email@example.com',
+				facebook: '#',
+				linkedin: '#',
+				image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
+				deals: 0,
+				gagnes: 0,
+				enCours: 0
+			};
+
+			document.getElementById('modalProfileName').textContent = profile.name;
+			document.getElementById('modalProfileTitle').textContent = profile.title;
+			document.getElementById('modalPhone').textContent = profile.phone;
+			document.getElementById('modalPhoneLink').href = 'tel:' + profile.phone.replace(/\s/g, '');
+			document.getElementById('modalEmail').textContent = profile.email;
+			document.getElementById('modalEmailLink').href = 'mailto:' + profile.email;
+			document.getElementById('modalDeals').textContent = profile.deals || 0;
+			document.getElementById('modalGagnes').textContent = profile.gagnes || 0;
+			document.getElementById('modalEnCours').textContent = profile.enCours || 0;
+			
+			// Fonction pour copier l'email
+			const copyEmailBtn = document.getElementById('copyEmailBtn');
+			copyEmailBtn.onclick = function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				const email = profile.email;
+				navigator.clipboard.writeText(email).then(function() {
+					const btn = copyEmailBtn;
+					const originalHTML = btn.innerHTML;
+					btn.innerHTML = '<i class="fas fa-check"></i> Copié!';
+					btn.style.background = '#28a745';
+					setTimeout(function() {
+						btn.innerHTML = originalHTML;
+						btn.style.background = '#4cbebc';
+					}, 2000);
+				}).catch(function(err) {
+					console.error('Erreur lors de la copie:', err);
+					alert('Erreur lors de la copie de l\'email');
+				});
+			};
+
+			var modal = new bootstrap.Modal(document.getElementById('profileModal'));
+			modal.show();
+		}
+
+		// Clic sur les cartes Kanban pour ouvrir la fiche du courtier
+		document.addEventListener('DOMContentLoaded', function() {
+			// Ajouter les event listeners sur toutes les cartes
+			document.querySelectorAll('.kanban-card').forEach(function(card) {
+				card.style.cursor = 'pointer';
+				card.addEventListener('click', function(e) {
+					// Ne pas ouvrir si on clique sur un élément interactif
+					if (e.target.closest('a, button, .dropdown')) {
+						return;
+					}
+					
+					// Trouver l'élément avec le nom du courtier
+					const courtierElements = card.querySelectorAll('.kanban-card-info');
+					let courtierName = null;
+					
+					courtierElements.forEach(function(element) {
+						const text = element.textContent.trim();
+						if (text.startsWith('Courtier:')) {
+							courtierName = text.replace('Courtier:', '').trim();
+						}
+					});
+					
+					// Vérifier si un courtier est assigné
+					if (courtierName && courtierName !== 'Aucun courtier') {
+						openProfileModal(courtierName);
+					}
+				});
+			});
+			
+			// Initialiser les compteurs et montants (sans drag & drop)
+			updateColumnCounts();
+		});
+	</script>
+
+	<!-- Modal de profil -->
+	<div class="modal fade profile-modal" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="profileModalLabel" style="color: #2f2d2e; font-weight: 600;">Profil</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="text-center mb-4">
+						<h4 id="modalProfileName" style="color: #2f2d2e; font-weight: 600; margin-bottom: 0.5rem;"></h4>
+						<p id="modalProfileTitle" style="color: #4cbebc; font-weight: 500; margin-bottom: 0;"></p>
+					</div>
+					<hr style="border-color: #e5e5e5; margin: 1.5rem 0;">
+					<!-- Statistiques -->
+					<div class="row mb-4" style="margin: 0 -0.5rem;">
+						<div class="col-4 px-1">
+							<div class="text-center" style="padding: 1rem; background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%); border-radius: 10px;">
+								<div style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Deals</div>
+								<div id="modalDeals" style="color: #4cbebc; font-weight: 600; font-size: 1.5rem;">0</div>
+							</div>
+						</div>
+						<div class="col-4 px-1">
+							<div class="text-center" style="padding: 1rem; background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%); border-radius: 10px;">
+								<div style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Gagnés</div>
+								<div id="modalGagnes" style="color: #4cbebc; font-weight: 600; font-size: 1.5rem;">0</div>
+							</div>
+						</div>
+						<div class="col-4 px-1">
+							<div class="text-center" style="padding: 1rem; background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%); border-radius: 10px;">
+								<div style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">En cours</div>
+								<div id="modalEnCours" style="color: #4cbebc; font-weight: 600; font-size: 1.5rem;">0</div>
+							</div>
+						</div>
+					</div>
+					<hr style="border-color: #e5e5e5; margin: 1.5rem 0;">
+					<div class="contact-item">
+						<div class="contact-icon">
+							<i class="fas fa-phone"></i>
+						</div>
+						<div class="contact-info" style="flex: 1;">
+							<div class="contact-label">Téléphone</div>
+							<a href="#" id="modalPhoneLink" class="contact-value" style="color: #4cbebc; text-decoration: none; font-weight: 500; display: inline-block; transition: color 0.3s;" onmouseover="this.style.color='#3aa8a6'" onmouseout="this.style.color='#4cbebc'">
+								<span id="modalPhone">--</span>
+							</a>
+						</div>
+					</div>
+					<div class="contact-item">
+						<div class="contact-icon">
+							<i class="fas fa-envelope"></i>
+						</div>
+						<div class="contact-info" style="flex: 1;">
+							<div class="contact-label">Email</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<a href="#" id="modalEmailLink" class="contact-value" style="color: #4cbebc; text-decoration: none; font-weight: 500; flex: 1; transition: color 0.3s;" onmouseover="this.style.color='#3aa8a6'" onmouseout="this.style.color='#4cbebc'">
+									<span id="modalEmail">--</span>
+								</a>
+								<button type="button" id="copyEmailBtn" class="btn btn-sm" style="background: #4cbebc; color: white; border: none; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='#3aa8a6'" onmouseout="this.style.background='#4cbebc'" title="Copier l'email">
+									<i class="fas fa-copy"></i> Copier
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
+

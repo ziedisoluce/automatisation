@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+   <!-- PAGE TITLE HERE -->
+	<title>Modèles de sites Web de gestion et d'administration | Fillow : Modèle d'administration SaaS Bootstrap 5 - Renforcez votre travail d'administration | Dexignlabs</title>
+
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="author" content="Dexignlabs">
+
+	<meta name="robots" content="index, follow">
+
+	<meta name="keywords" content="	admin, admin dashboard, admin template, analytics, bootstrap, bootstrap5, bootstrap 5 admin template, modern, responsive admin dashboard, sales dashboard, sass, ui kit, web app, Fillow SaaS, User Interface (UI), User Experience (UX), Tableau de bord Design, SaaS Application, Web Application, Data Visualization, Analytics, Customization, Responsive Design, Bootstrap Framework, Charts and Graphs, Data Management, Reporting, Dark Mode, Mobile-Friendly, Tableau de bord Components, Integrations, Analytics Tableau de bord, API Integration, User Authentication">
+
+
+	<meta name="description" content="Élevez votre efficacité administrative et améliorez la productivité avec le modèle de tableau de bord d'administration SaaS Fillow. Conçu pour rationaliser vos tâches, cet outil puissant offre une interface conviviale, des fonctionnalités robustes et des options personnalisables, ce qui en fait le choix idéal pour gérer vos données et opérations en toute simplicité.">
+
+	<meta property="og:title" content="Fillow : Modèle d'administration SaaS Bootstrap 5 | Dexignlabs">
+	<meta property="og:description" content="Élevez votre efficacité administrative et améliorez la productivité avec le modèle de tableau de bord d'administration SaaS Fillow. Conçu pour rationaliser vos tâches, cet outil puissant offre une interface conviviale, des fonctionnalités robustes et des options personnalisables, ce qui en fait le choix idéal pour gérer vos données et opérations en toute simplicité.">
+	<meta property="og:image" content="https://fillow.dexignlab.com/xhtml/social-image.png">
+	<meta name="format-detection" content="telephone=no">
+
+	<meta name="twitter:title" content="Fillow : Modèle d'administration SaaS Bootstrap 5 | Dexignlabs">
+	<meta name="twitter:description" content="Élevez votre efficacité administrative et améliorez la productivité avec le modèle de tableau de bord d'administration SaaS Fillow. Conçu pour rationaliser vos tâches, cet outil puissant offre une interface conviviale, des fonctionnalités robustes et des options personnalisables, ce qui en fait le choix idéal pour gérer vos données et opérations en toute simplicité.">
+	<meta name="twitter:image" content="https://fillow.dexignlab.com/xhtml/social-image.png">
+	<meta name="twitter:card" content="summary_large_image">
+
+	<!-- MOBILE SPECIFIC -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- FAVICONS ICON -->
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png">
+	<link href="vendor/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+	<link href="vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
+	<link rel="stylesheet" href="vendor/nouislider/nouislider.min.css">
+	
+	<!-- Style css -->
+    <link href="css/style.css" rel="stylesheet">
+	
+</head>
+
+    <!--**********************************
+    Content body start
+    ***********************************-->
+        <!--**********************************
+    Content body start
+        ***********************************-->
+<body
+<div class="content-body default-height">
+    <!-- row -->
+    <div class="container-fluid">
+        <!-- Titre de la page -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="mb-0" style="color: #2f2d2e; font-weight: 700; font-size: 2rem;">Tableau de bord - Manager</h2>
+                <p class="text-muted mb-0 mt-2" style="color: #6c757d; font-size: 1rem;">Vue consolidée de votre réseau et statistiques détaillées</p>
+                </div>
+            </div>
+        
+        <!-- KPIs Consolidés -->
+        <div class="row mb-4">
+            <div class="col-12 mb-3">
+                <h5 class="mb-0" style="color: #2f2d2e; font-weight: 600;">KPIs Consolidés (Vue Manager)</h5>
+                <p class="text-muted mb-3" style="color: #2f2d2e; font-size: 0.875rem;">Vue consolidée pour piloter le réseau</p>
+								</div>
+            <div class="col-xl-4 col-lg-6 col-sm-6">
+                <div class="card" style="border-left: 4px solid #4cbebc; box-shadow: 0 2px 8px rgba(76, 190, 188, 0.15);">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+								<div>
+                                <h6 class="text-muted mb-2" style="color: #2f2d2e; font-weight: 500;">Total des deals</h6>
+                                <h2 class="mb-0" style="color: #4cbebc; font-weight: 700; font-size: 2.5rem;" id="totalDeals">0</h2>
+                                <small class="text-muted" style="color: #2f2d2e;">Par entreprise / team</small>
+								</div>							
+                            <div class="icon-box" style="width: 70px; height: 70px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88M13 7C13 9.20914 11.2091 11 9 11C6.79086 11 5 9.20914 5 7C5 4.79086 6.79086 3 9 3C11.2091 3 13 4.79086 13 7Z" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+								</div>
+							</div>
+									</div>
+									</div>
+								</div>
+            <div class="col-xl-4 col-lg-6 col-sm-6">
+                <div class="card" style="border-left: 4px solid #4cbebc; box-shadow: 0 2px 8px rgba(76, 190, 188, 0.15);">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+								<div>
+                                <h6 class="text-muted mb-2" style="color: #2f2d2e; font-weight: 500;">Chiffre d'affaires global</h6>
+                                <h2 class="mb-0" style="color: #4cbebc; font-weight: 700; font-size: 2.5rem;" id="caGlobal">0 €</h2>
+                                <small class="text-muted" style="color: #2f2d2e;">CA consolidé</small>
+								</div>
+                            <div class="icon-box" style="width: 70px; height: 70px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 8C12 8 12 2 8 2C4 2 4 8 4 8M4 8C4 8 4 14 8 14C12 14 12 8 12 8M12 8C12 8 12 14 16 14C20 14 20 8 20 8M20 8C20 8 20 2 16 2C12 2 12 8 12 8M12 8H12.01M4 16C4 16 4 22 8 22C12 22 12 16 12 16M12 16C12 16 12 22 16 22C20 22 20 16 20 16" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+							</div>
+											</div>
+										</div>
+											</div>
+										</div>
+            <div class="col-xl-4 col-lg-6 col-sm-6">
+                <div class="card" style="border-left: 4px solid #4cbebc; box-shadow: 0 2px 8px rgba(76, 190, 188, 0.15);">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+								<div>
+                                <h6 class="text-muted mb-2" style="color: #2f2d2e; font-weight: 500;">Taux de succès</h6>
+                                <h2 class="mb-0" style="color: #4cbebc; font-weight: 700; font-size: 2.5rem;" id="tauxSucces">0%</h2>
+                                <small class="text-muted" style="color: #2f2d2e;">Taux de conversion</small>
+								</div>
+                            <div class="icon-box" style="width: 70px; height: 70px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 12L11 14L15 10M7.83594 2.69766L2.24666 8.28694C1.85417 8.67942 1.85417 9.31259 2.24666 9.70508L10.7941 18.2525C11.1866 18.645 11.8198 18.645 12.2123 18.2525L21.7533 8.71148C22.1458 8.31899 22.1458 7.68583 21.7533 7.29334L16.1641 1.70406C15.7716 1.31157 15.1384 1.31157 14.7459 1.70406L12.2123 4.23767C11.8198 4.63016 11.1866 4.63016 10.7941 4.23767L7.83594 2.69766Z" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+											</div>
+														</div>
+													</div>
+												</div>
+											</div>
+														</div>
+
+        <!-- KPIs par DEAL (comme dans dashboard apporteur) -->
+				<div class="row mb-4">
+            <div class="col-12 mb-3">
+                <h5 class="mb-0" style="color: #2f2d2e; font-weight: 600;">KPIs par DEAL</h5>
+                <p class="text-muted mb-3" style="color: #2f2d2e; font-size: 0.875rem;">Statistiques individuelles de vos deals</p>
+            </div>
+					<div class="col-xl-4 col-lg-6 col-sm-6">
+						<div class="card" style="border-left: 4px solid #4cbebc; box-shadow: 0 2px 8px rgba(76, 190, 188, 0.15);">
+							<div class="card-body">
+								<div class="d-flex justify-content-between align-items-center">
+									<div>
+										<h6 class="text-muted mb-2" style="color: #2f2d2e; font-weight: 500;">Nombre d'affaires</h6>
+                                <h2 class="mb-0" style="color: #4cbebc; font-weight: 700; font-size: 2.5rem;" id="nombreAffaires">0</h2>
+										<small class="text-muted" style="color: #2f2d2e;">Total des deals</small>
+									</div>
+									<div class="icon-box" style="width: 70px; height: 70px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+										<svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6 col-sm-6">
+						<div class="card" style="border-left: 4px solid #4cbebc; box-shadow: 0 2px 8px rgba(76, 190, 188, 0.15);">
+							<div class="card-body">
+								<div class="d-flex justify-content-between align-items-center">
+									<div>
+										<h6 class="text-muted mb-2" style="color: #2f2d2e; font-weight: 500;">Montant total</h6>
+                                <h2 class="mb-0" style="color: #4cbebc; font-weight: 700; font-size: 2.5rem;" id="montantTotal">0 €</h2>
+										<small class="text-muted" style="color: #2f2d2e;">CA total</small>
+									</div>
+									<div class="icon-box" style="width: 70px; height: 70px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+										<svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6 col-sm-6">
+						<div class="card" style="border-left: 4px solid #4cbebc; box-shadow: 0 2px 8px rgba(76, 190, 188, 0.15);">
+							<div class="card-body">
+								<div class="d-flex justify-content-between align-items-center">
+									<div>
+										<h6 class="text-muted mb-2" style="color: #2f2d2e; font-weight: 500;">Affaires gagnées</h6>
+                                <h2 class="mb-0" style="color: #4cbebc; font-weight: 700; font-size: 2.5rem;" id="affairesGagnees">0</h2>
+										<small class="text-muted" style="color: #2f2d2e;">Deals clôturés</small>
+									</div>
+									<div class="icon-box" style="width: 70px; height: 70px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+										<svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M9 12L11 14L15 10M7.83594 2.69766L2.24666 8.28694C1.85417 8.67942 1.85417 9.31259 2.24666 9.70508L10.7941 18.2525C11.1866 18.645 11.8198 18.645 12.2123 18.2525L21.7533 8.71148C22.1458 8.31899 22.1458 7.68583 21.7533 7.29334L16.1641 1.70406C15.7716 1.31157 15.1384 1.31157 14.7459 1.70406L12.2123 4.23767C11.8198 4.63016 11.1866 4.63016 10.7941 4.23767L7.83594 2.69766Z" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+										</svg>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+        <!-- Tableau Synthétique par Apporteur (KPIs par Apporteur d'Affaires) -->
+        <div class="row mb-4">
+            <div class="col-xl-12">
+                <div class="card" style="box-shadow: 0 2px 12px rgba(47, 45, 46, 0.08); border: none;">
+                    <div class="card-header border-0 pb-3" style="background: #fff; border-bottom: 2px solid #f5f5f5;">
+                        <h4 class="card-title mb-0" style="color: #2f2d2e; font-weight: 600;">KPIs par Apporteur d'Affaires</h4>
+                        <p class="text-muted mb-0 mt-1" style="color: #2f2d2e; font-size: 0.875rem;">Vue consolidée des collaborateurs de l'entreprise</p>
+                    </div>
+                    <div class="card-body">
+                        <!-- Tableau synthétique -->
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="apporteursTable" style="border-collapse: separate; border-spacing: 0;">
+                                <thead style="background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%);">
+                                    <tr>
+                                        <th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px;">Apporteur d'Affaires</th>
+                                        <th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">Nombre d'affaires</th>
+                                        <th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">Montant total</th>
+                                        <th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">Affaires gagnées</th>
+                                        <th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">Taux de succès</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="apporteursTableBody">
+                                    <!-- Les données seront injectées ici via JavaScript -->
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5" style="color: #2f2d2e;">
+                                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.3; margin-bottom: 1rem;">
+                                                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88M13 7C13 9.20914 11.2091 11 9 11C6.79086 11 5 9.20914 5 7C5 4.79086 6.79086 3 9 3C11.2091 3 13 4.79086 13 7Z" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            <p class="mb-0" style="color: #2f2d2e; opacity: 0.6;">Aucun apporteur pour le moment</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Détails par Deal (comme dans dashboard apporteur) -->
+        <div class="row mt-4">
+					<div class="col-xl-12">
+						<div class="card" style="box-shadow: 0 2px 12px rgba(47, 45, 46, 0.08); border: none;">
+							<div class="card-header border-0 pb-3" style="background: #fff; border-bottom: 2px solid #f5f5f5;">
+								<h4 class="card-title mb-0" style="color: #2f2d2e; font-weight: 600;">Mes Affaires</h4>
+								<p class="text-muted mb-0 mt-1" style="color: #2f2d2e; font-size: 0.875rem;">Vue d'ensemble de tous vos deals</p>
+							</div>
+							<div class="card-body">
+								<!-- Tableau des deals -->
+								<div class="table-responsive">
+									<table class="table table-hover mb-0" id="dealsTable" style="border-collapse: separate; border-spacing: 0;">
+										<thead style="background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%);">
+											<tr>
+												<th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px;">Nom du Deal</th>
+												<th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px;">Montant</th>
+												<th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px; min-width: 180px;">État d'avancement</th>
+												<th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px;">Date de création</th>
+												<th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px;">Date de clôture</th>
+												<th style="color: #2f2d2e; font-weight: 600; padding: 1.25rem 1rem; border: none; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">Statut</th>
+											</tr>
+										</thead>
+										<tbody id="dealsTableBody">
+											<!-- Les données seront injectées ici via JavaScript -->
+											<tr>
+												<td colspan="6" class="text-center py-5" style="color: #2f2d2e;">
+													<svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.3; margin-bottom: 1rem;">
+														<path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+													</svg>
+													<p class="mb-0" style="color: #2f2d2e; opacity: 0.6;">Aucun deal pour le moment</p>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="vendor/global/global.min.js"></script>
+	<script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
+
+
+	<!-- counter -->
+	<script src="vendor/counter/counter.min.js"></script>
+	<script src="vendor/counter/waypoint.min.js"></script>
+	
+	<!-- Apex Chart -->
+	<script src="vendor/apexchart/apexchart.js"></script>
+	<script src="vendor/chart-js/chart.bundle.min.js"></script>
+	<!-- Chart piety plugin files -->
+    <script src="vendor/peity/jquery.peity.min.js"></script>
+	<!-- Tableau de bord 1 -->
+	<script src="js/dashboard/dashboard-1.js"></script>
+	
+	<!-- Script personnalisé pour le Dashboard Manager -->
+	<script>
+		// Données d'exemple consolidées par apporteur (à remplacer par des appels API réels)
+		const apporteursData = [
+			{
+				id: 1,
+				nom: "Jean Dupont",
+				nombreAffaires: 12,
+				montantTotal: 245000,
+				affairesGagnees: 8,
+				image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
+			},
+			{
+				id: 2,
+				nom: "Marie Martin",
+				nombreAffaires: 15,
+				montantTotal: 380000,
+				affairesGagnees: 11,
+				image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face"
+			},
+			{
+				id: 3,
+				nom: "Pierre Durand",
+				nombreAffaires: 9,
+				montantTotal: 195000,
+				affairesGagnees: 6,
+				image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face"
+			},
+			{
+				id: 4,
+				nom: "Sophie Bernard",
+				nombreAffaires: 18,
+				montantTotal: 420000,
+				affairesGagnees: 14,
+				image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face"
+			},
+			{
+				id: 5,
+				nom: "Luc Moreau",
+				nombreAffaires: 7,
+				montantTotal: 165000,
+				affairesGagnees: 4,
+				image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face"
+			}
+		];
+
+		// Données de profil pour les popups (à remplacer par des données réelles depuis votre API)
+		const profileData = {
+			'Jean Dupont': { name: 'Jean Dupont', title: 'Apporteur d\'affaires', phone: '+33 6 12 34 56 78', email: 'jean.dupont@example.com', facebook: 'https://facebook.com/jean.dupont', linkedin: 'https://linkedin.com/in/jean-dupont', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', deals: 12, gagnes: 8, enCours: 4 },
+			'Marie Martin': { name: 'Marie Martin', title: 'Apporteur d\'affaires', phone: '+33 6 23 45 67 89', email: 'marie.martin@example.com', facebook: 'https://facebook.com/marie.martin', linkedin: 'https://linkedin.com/in/marie-martin', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face', deals: 15, gagnes: 11, enCours: 4 },
+			'Pierre Durand': { name: 'Pierre Durand', title: 'Apporteur d\'affaires', phone: '+33 6 34 56 78 90', email: 'pierre.durand@example.com', facebook: 'https://facebook.com/pierre.durand', linkedin: 'https://linkedin.com/in/pierre-durand', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face', deals: 9, gagnes: 6, enCours: 3 },
+			'Sophie Bernard': { name: 'Sophie Bernard', title: 'Apporteur d\'affaires', phone: '+33 6 45 67 89 01', email: 'sophie.bernard@example.com', facebook: 'https://facebook.com/sophie.bernard', linkedin: 'https://linkedin.com/in/sophie-bernard', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face', deals: 18, gagnes: 14, enCours: 4 },
+			'Luc Moreau': { name: 'Luc Moreau', title: 'Apporteur d\'affaires', phone: '+33 6 56 78 90 12', email: 'luc.moreau@example.com', facebook: 'https://facebook.com/luc.moreau', linkedin: 'https://linkedin.com/in/luc-moreau', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face', deals: 7, gagnes: 4, enCours: 3 }
+		};
+
+		// Données d'exemple pour les deals (à remplacer par des appels API réels)
+		const dealsData = [
+			{
+				id: 1,
+				nom: "Deal Client ABC",
+				montant: 45000,
+				avancement: 7,
+				dateCreation: "2024-01-15",
+				dateCloture: "2024-03-20",
+				statut: "En cours"
+			},
+			{
+				id: 2,
+				nom: "Projet XYZ Corp",
+				montant: 125000,
+				avancement: 9,
+				dateCreation: "2023-12-10",
+				dateCloture: "2024-02-28",
+				statut: "En cours"
+			},
+			{
+				id: 3,
+				nom: "Contrat Premium",
+				montant: 78000,
+				avancement: 10,
+				dateCreation: "2023-11-05",
+				dateCloture: "2024-01-30",
+				statut: "Gagné"
+			},
+			{
+				id: 4,
+				nom: "Deal Startup",
+				montant: 32000,
+				avancement: 4,
+				dateCreation: "2024-02-01",
+				dateCloture: null,
+				statut: "En cours"
+			},
+			{
+				id: 5,
+				nom: "Projet Innovation",
+				montant: 95000,
+				avancement: 8,
+				dateCreation: "2024-01-20",
+				dateCloture: "2024-04-15",
+				statut: "En cours"
+			},
+			{
+				id: 6,
+				nom: "Contrat Enterprise",
+				montant: 180000,
+				avancement: 10,
+				dateCreation: "2023-10-12",
+				dateCloture: "2024-01-25",
+				statut: "Gagné"
+			}
+		];
+
+		// Fonction pour formater les montants
+		function formatMontant(montant) {
+			return new Intl.NumberFormat('fr-FR', {
+				style: 'currency',
+				currency: 'EUR',
+				minimumFractionDigits: 0
+			}).format(montant);
+		}
+
+		// Fonction pour calculer le taux de succès
+		function calculerTauxSucces(nombreAffaires, affairesGagnees) {
+			if (nombreAffaires === 0) return 0;
+			return Math.round((affairesGagnees / nombreAffaires) * 100);
+		}
+
+		// Fonction pour formater les dates
+		function formatDate(dateString) {
+			if (!dateString) return '-';
+			const date = new Date(dateString);
+			return new Intl.DateTimeFormat('fr-FR', {
+				day: '2-digit',
+				month: '2-digit',
+				year: 'numeric'
+			}).format(date);
+		}
+
+		// Liste des colonnes Kanban pour les états d'avancement
+		const kanbanColumns = [
+			'Lead reçu',                    // 1-2
+			'Appel programmé',               // 3-4
+			'Absent',                        // 5-6
+			'Sans réponse',                  // 7-8
+			'En attente de documents'        // 9-10
+		];
+		
+		// Fonction pour obtenir le nom de la colonne Kanban basé sur la valeur
+		function getProgressName(value) {
+			// Mapper les valeurs 1-10 aux colonnes Kanban
+			if (value <= 2) {
+				return kanbanColumns[0]; // Lead received
+			} else if (value <= 4) {
+				return kanbanColumns[1]; // Call scheduled
+			} else if (value <= 6) {
+				return kanbanColumns[2]; // No show
+			} else if (value <= 8) {
+				return kanbanColumns[3]; // No reply
+			} else {
+				return kanbanColumns[4]; // Waiting for documents
+			}
+		}
+
+		// Fonction pour créer une jauge de progression
+		function createProgressGauge(value) {
+			const percentage = (value / 10) * 100;
+			let color, bgColor;
+			if (value <= 3) {
+				color = '#dc3545';
+				bgColor = 'rgba(220, 53, 69, 0.1)';
+			} else if (value <= 6) {
+				color = '#ffc107';
+				bgColor = 'rgba(255, 193, 7, 0.1)';
+			} else if (value <= 8) {
+				color = '#4cbebc';
+				bgColor = 'rgba(76, 190, 188, 0.1)';
+			} else {
+				color = '#28a745';
+				bgColor = 'rgba(40, 167, 69, 0.1)';
+			}
+			
+			const progressName = getProgressName(value);
+			
+			return `
+				<div class="progress-gauge-container" style="position: relative; width: 100%; padding-top: 8px;">
+					<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+						<div style="font-size: 0.8rem; font-weight: 600; color: ${color}; background: ${bgColor}; padding: 4px 10px; border-radius: 12px; display: inline-block; white-space: nowrap;">
+						${value}/10
+					</div>
+						<span style="font-size: 0.875rem; color: #2f2d2e; font-weight: 500;">${progressName}</span>
+					</div>
+					<div class="progress" style="height: 10px; background-color: #f0f0f0; border-radius: 10px; overflow: hidden;">
+						<div class="progress-bar" role="progressbar" style="width: ${percentage}%; background: linear-gradient(90deg, ${color} 0%, ${color}dd 100%); border-radius: 10px; transition: width 0.6s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" aria-valuenow="${value}" aria-valuemin="0" aria-valuemax="10">
+						</div>
+					</div>
+				</div>
+			`;
+		}
+
+		// Fonction pour obtenir le badge de statut
+		function getStatusBadge(statut) {
+			const badges = {
+				'Gagné': '<span class="badge" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-weight: 500;">Gagné</span>',
+				'En cours': '<span class="badge" style="background: linear-gradient(135deg, #4cbebc 0%, #3aa8a6 100%); color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-weight: 500;">En cours</span>',
+				'Perdu': '<span class="badge" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-weight: 500;">Perdu</span>'
+			};
+			return badges[statut] || badges['En cours'];
+		}
+
+		// Calcul des KPIs consolidés
+		function calculateKPIs() {
+			// Calculer les totaux consolidés (pour la vue manager)
+			const totalDeals = apporteursData.reduce((sum, app) => sum + app.nombreAffaires, 0);
+			const caGlobal = apporteursData.reduce((sum, app) => sum + app.montantTotal, 0);
+			const totalGagnes = apporteursData.reduce((sum, app) => sum + app.affairesGagnees, 0);
+			const tauxSucces = totalDeals > 0 ? Math.round((totalGagnes / totalDeals) * 100) : 0;
+
+			// Mise à jour des KPIs consolidés
+			document.getElementById('totalDeals').textContent = totalDeals;
+			document.getElementById('caGlobal').textContent = formatMontant(caGlobal);
+			document.getElementById('tauxSucces').textContent = tauxSucces + '%';
+
+			// Calculer les KPIs par DEAL (comme dans dashboard apporteur)
+			const nombreAffaires = dealsData.length;
+			const montantTotal = dealsData.reduce((sum, deal) => sum + deal.montant, 0);
+			const affairesGagnees = dealsData.filter(deal => deal.statut === 'Gagné').length;
+
+			// Mise à jour des KPIs par DEAL
+			document.getElementById('nombreAffaires').textContent = nombreAffaires;
+			document.getElementById('montantTotal').textContent = formatMontant(montantTotal);
+			document.getElementById('affairesGagnees').textContent = affairesGagnees;
+		}
+
+		// Remplir le tableau synthétique par apporteur
+		function populateApporteursTable() {
+			const tbody = document.getElementById('apporteursTableBody');
+			
+			if (apporteursData.length === 0) {
+				tbody.innerHTML = `
+					<tr>
+						<td colspan="5" class="text-center py-5" style="color: #2f2d2e;">
+							<svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.3; margin-bottom: 1rem;">
+								<path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88M13 7C13 9.20914 11.2091 11 9 11C6.79086 11 5 9.20914 5 7C5 4.79086 6.79086 3 9 3C11.2091 3 13 4.79086 13 7Z" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+							<p class="mb-0" style="color: #2f2d2e; opacity: 0.6;">Aucun apporteur pour le moment</p>
+						</td>
+					</tr>
+				`;
+				return;
+			}
+
+			tbody.innerHTML = apporteursData.map(apporteur => {
+				const tauxSucces = calculerTauxSucces(apporteur.nombreAffaires, apporteur.affairesGagnees);
+				let tauxColor = '#4cbebc';
+				if (tauxSucces < 50) {
+					tauxColor = '#dc3545';
+				} else if (tauxSucces < 70) {
+					tauxColor = '#ffc107';
+				} else {
+					tauxColor = '#28a745';
+				}
+
+				return `
+					<tr style="border-bottom: 1px solid #f0f0f0; transition: all 0.2s ease;" 
+						onmouseover="this.style.backgroundColor='rgba(76, 190, 188, 0.04)'; this.style.transform='scale(1.01)'" 
+						onmouseout="this.style.backgroundColor='transparent'; this.style.transform='scale(1)'">
+						<td style="padding: 1.25rem 1rem; color: #2f2d2e; font-weight: 500; vertical-align: middle;">
+							<div style="display: flex; align-items: center;">
+								<span>${apporteur.nom}</span>
+							</div>
+						</td>
+						<td style="padding: 1.25rem 1rem; color: #2f2d2e; font-weight: 600; vertical-align: middle; text-align: center; font-size: 1.05rem;">
+							${apporteur.nombreAffaires}
+						</td>
+						<td style="padding: 1.25rem 1rem; color: #2f2d2e; font-weight: 600; vertical-align: middle; text-align: center; font-size: 1.05rem;">
+							${formatMontant(apporteur.montantTotal)}
+						</td>
+						<td style="padding: 1.25rem 1rem; color: #2f2d2e; font-weight: 600; vertical-align: middle; text-align: center; font-size: 1.05rem;">
+							${apporteur.affairesGagnees}
+						</td>
+						<td style="padding: 1.25rem 1rem; vertical-align: middle; text-align: center;">
+							<span style="font-size: 1.05rem; font-weight: 600; color: ${tauxColor};">
+								${tauxSucces}%
+							</span>
+						</td>
+					</tr>
+				`;
+			}).join('');
+		}
+
+		// Remplir le tableau des deals
+		function populateDealsTable() {
+			const tbody = document.getElementById('dealsTableBody');
+			
+			if (dealsData.length === 0) {
+				tbody.innerHTML = `
+					<tr>
+						<td colspan="6" class="text-center py-5" style="color: #2f2d2e;">
+							<svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.3; margin-bottom: 1rem;">
+								<path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#4cbebc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+							<p class="mb-0" style="color: #2f2d2e; opacity: 0.6;">Aucun deal pour le moment</p>
+						</td>
+					</tr>
+				`;
+				return;
+			}
+
+			tbody.innerHTML = dealsData.map(deal => `
+				<tr style="border-bottom: 1px solid #f0f0f0; transition: all 0.2s ease;" 
+					onmouseover="this.style.backgroundColor='rgba(76, 190, 188, 0.04)'; this.style.transform='scale(1.01)'" 
+					onmouseout="this.style.backgroundColor='transparent'; this.style.transform='scale(1)'">
+					<td style="padding: 1.25rem 1rem; color: #2f2d2e; font-weight: 500; vertical-align: middle;">
+						<div style="display: flex; align-items: center;">
+							<div style="width: 8px; height: 8px; border-radius: 50%; background: #4cbebc; margin-right: 12px;"></div>
+							<span>${deal.nom}</span>
+						</div>
+					</td>
+					<td style="padding: 1.25rem 1rem; color: #2f2d2e; font-weight: 600; vertical-align: middle; font-size: 1.05rem;">
+						${formatMontant(deal.montant)}
+					</td>
+					<td style="padding: 1.25rem 1rem; min-width: 180px; vertical-align: middle;">
+						${createProgressGauge(deal.avancement)}
+					</td>
+					<td style="padding: 1.25rem 1rem; color: #2f2d2e; vertical-align: middle;">
+						<span style="font-size: 0.9rem;">${formatDate(deal.dateCreation)}</span>
+					</td>
+					<td style="padding: 1.25rem 1rem; color: #2f2d2e; vertical-align: middle;">
+						<span style="font-size: 0.9rem;">${formatDate(deal.dateCloture)}</span>
+					</td>
+					<td style="padding: 1.25rem 1rem; text-align: center; vertical-align: middle;">
+						${getStatusBadge(deal.statut)}
+					</td>
+				</tr>
+			`).join('');
+		}
+
+		// Fonction pour ouvrir le modal avec les données du profil
+		function openProfileModal(profileName) {
+			const profile = profileData[profileName] || {
+				name: profileName || 'Utilisateur',
+				title: 'Apporteur d\'affaires',
+				phone: '+33 6 00 00 00 00',
+				email: 'email@example.com',
+				facebook: '#',
+				linkedin: '#',
+				image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
+				deals: 0,
+				gagnes: 0,
+				enCours: 0
+			};
+
+			document.getElementById('modalProfileImage').src = profile.image;
+			document.getElementById('modalProfileName').textContent = profile.name;
+			document.getElementById('modalProfileTitle').textContent = profile.title;
+			document.getElementById('modalPhone').textContent = profile.phone;
+			document.getElementById('modalEmail').textContent = profile.email;
+			const facebookLink = document.getElementById('modalFacebook');
+			facebookLink.href = profile.facebook;
+			facebookLink.textContent = profile.facebook !== '#' ? 'Voir le profil' : '--';
+			const linkedinLink = document.getElementById('modalLinkedIn');
+			linkedinLink.href = profile.linkedin;
+			linkedinLink.textContent = profile.linkedin !== '#' ? 'Voir le profil' : '--';
+			document.getElementById('modalDeals').textContent = profile.deals || 0;
+			document.getElementById('modalGagnes').textContent = profile.gagnes || 0;
+			document.getElementById('modalEnCours').textContent = profile.enCours || 0;
+
+			var modal = new bootstrap.Modal(document.getElementById('profileModal'));
+			modal.show();
+		}
+
+		// Initialisation au chargement de la page
+		document.addEventListener('DOMContentLoaded', function() {
+			calculateKPIs();
+			populateApporteursTable();
+			populateDealsTable();
+		});
+	</script>
+	
+	<style>
+		/* Styles personnalisés pour le dashboard apporteur */
+		.card {
+			border-radius: 12px;
+			transition: transform 0.2s, box-shadow 0.2s;
+		}
+		
+		.card:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 16px rgba(76, 190, 188, 0.2) !important;
+		}
+		
+		.progress-gauge-container {
+			min-width: 120px;
+		}
+		
+		.table thead th {
+			font-size: 0.875rem;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+		
+		.table tbody td {
+			vertical-align: middle;
+		}
+		
+		/* Animation pour les KPIs */
+		@keyframes countUp {
+			from {
+				opacity: 0;
+				transform: translateY(10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		
+		.card-body h2 {
+			animation: countUp 0.6s ease-out;
+		}
+	</style>
+	
+	<script src="vendor/owl-carousel/owl.carousel.js"></script>
+	
+    <script src="js/custom.min.js"></script>
+	<script src="js/dlabnav-init.js"></script>
+	<script>
+		function cardsCenter()
+		{
+			/*  testimonial one function by = owl.carousel.js */
+			jQuery('.card-slider').owlCarousel({
+				loop:true,
+				margin:0,
+				nav:true,
+				//center:true,
+				slideSpeed: 3000,
+				paginationSpeed: 3000,
+				dots: true,
+				navText: ['<i class="fas fa-arrow-est parti"></i>', '<i class="fas fa-arrow-right"></i>'],
+				responsive:{
+					0:{
+						items:1
+					},
+					576:{
+						items:1
+					},	
+					800:{
+						items:1
+					},			
+					991:{
+						items:1
+					},
+					1200:{
+						items:1
+					},
+					1600:{
+						items:1
+					}
+				}
+			})
+		}
+		
+		jQuery(window).on('load',function(){
+			setHeureout(function(){
+				cardsCenter();
+			}, 1000); 
+		});
+	</script>
+
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+	<!-- Modal de profil -->
+	<div class="modal fade profile-modal" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" style="margin-top: -15vh; max-height: 90vh;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="profileModalLabel" style="color: #2f2d2e; font-weight: 600;">Profil</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" style="max-height: calc(90vh - 120px); overflow-y: auto;">
+					<div class="text-center mb-4">
+						<img id="modalProfileImage" src="" alt="Profil" class="profile-image" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #4cbebc; box-shadow: 0 4px 12px rgba(76, 190, 188, 0.3); margin: 0 auto 1rem; display: block;">
+						<h4 id="modalProfileName" style="color: #2f2d2e; font-weight: 600; margin-bottom: 0.5rem;"></h4>
+						<p id="modalProfileTitle" style="color: #4cbebc; font-weight: 500; margin-bottom: 0;"></p>
+					</div>
+					<hr style="border-color: #e5e5e5; margin: 1.5rem 0;">
+					<!-- Statistiques -->
+					<div class="row mb-4" style="margin: 0 -0.5rem;">
+						<div class="col-4 px-1">
+							<div class="text-center" style="padding: 1rem; background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%); border-radius: 10px;">
+								<div style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Deals</div>
+								<div id="modalDeals" style="color: #4cbebc; font-weight: 600; font-size: 1.5rem;">0</div>
+							</div>
+						</div>
+						<div class="col-4 px-1">
+							<div class="text-center" style="padding: 1rem; background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%); border-radius: 10px;">
+								<div style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Gagnés</div>
+								<div id="modalGagnes" style="color: #4cbebc; font-weight: 600; font-size: 1.5rem;">0</div>
+							</div>
+						</div>
+						<div class="col-4 px-1">
+							<div class="text-center" style="padding: 1rem; background: linear-gradient(135deg, rgba(76, 190, 188, 0.08) 0%, rgba(76, 190, 188, 0.12) 100%); border-radius: 10px;">
+								<div style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">En cours</div>
+								<div id="modalEnCours" style="color: #4cbebc; font-weight: 600; font-size: 1.5rem;">0</div>
+							</div>
+						</div>
+					</div>
+					<hr style="border-color: #e5e5e5; margin: 1.5rem 0;">
+					<div class="contact-item" style="display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid #f5f5f5;">
+						<div class="contact-icon" style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+							<i class="fas fa-phone" style="color: #4cbebc; font-size: 1.1rem;"></i>
+						</div>
+						<div class="contact-info" style="flex: 1;">
+							<div class="contact-label" style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Téléphone</div>
+							<p class="contact-value" id="modalPhone" style="color: #2f2d2e; font-weight: 500; margin: 0;">--</p>
+						</div>
+					</div>
+					<div class="contact-item" style="display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid #f5f5f5;">
+						<div class="contact-icon" style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+							<i class="fas fa-envelope" style="color: #4cbebc; font-size: 1.1rem;"></i>
+						</div>
+						<div class="contact-info" style="flex: 1;">
+							<div class="contact-label" style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Email</div>
+							<p class="contact-value" id="modalEmail" style="color: #2f2d2e; font-weight: 500; margin: 0;">--</p>
+						</div>
+					</div>
+					<div class="contact-item" style="display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid #f5f5f5;">
+						<div class="contact-icon" style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+							<i class="fab fa-facebook-f" style="color: #4cbebc; font-size: 1.1rem;"></i>
+						</div>
+						<div class="contact-info" style="flex: 1;">
+							<div class="contact-label" style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Facebook</div>
+							<a href="#" class="contact-link" id="modalFacebook" target="_blank" style="color: #4cbebc; text-decoration: none; transition: color 0.3s;">--</a>
+						</div>
+					</div>
+					<div class="contact-item" style="display: flex; align-items: center; padding: 1rem 0;">
+						<div class="contact-icon" style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(76, 190, 188, 0.1) 0%, rgba(76, 190, 188, 0.2) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+							<i class="fab fa-linkedin-in" style="color: #4cbebc; font-size: 1.1rem;"></i>
+						</div>
+						<div class="contact-info" style="flex: 1;">
+							<div class="contact-label" style="color: #6c757d; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">LinkedIn</div>
+							<a href="#" class="contact-link" id="modalLinkedIn" target="_blank" style="color: #4cbebc; text-decoration: none; transition: color 0.3s;">--</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.profile-modal .modal-content {
+			border-radius: 16px;
+			border: none;
+			box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+		}
+		.profile-modal .modal-header {
+			border-bottom: 1px solid #e5e5e5;
+			padding: 1.5rem;
+		}
+		.profile-modal .modal-body {
+			padding: 2rem;
+		}
+		.contact-link:hover {
+			color: #3aa8a6 !important;
+		}
+		/* Photos de profil retirées */
+		/* .apporteur-profile-img:hover {
+			opacity: 0.9;
+		} */
+	</style>
+
+</body>
+</html>
