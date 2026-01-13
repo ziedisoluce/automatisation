@@ -35,3 +35,20 @@ Socle minimal pour orchestrer des workflows n8n, versionne et pret a etre clone 
 - `scripts/validate-registry.js` echoue si un dossier `clients/` apparait dans une racine socle.
 - `.gitignore` protege les secrets (.env, logs, fichiers `*.token`, `*.key`, `*.pem`, `*.secret`, `clients/*/config/*.credentials.json`).
 - `README-WORKFLOW-GEN-PLAN.md` donne la feuille de route complete.
+
+## Branches
+
+La section ci-dessous recense automatiquement les branches actuelles du depot et se regenere a chaque creation ou mise a jour de branche.
+1. Executez `node scripts/update-readme-branches.mjs` pour forcer la mise a jour a tout moment.
+2. Lancez `.\scripts\setup-git-hooks.ps1` (PowerShell) ou `scripts/setup-git-hooks.sh` (bash) pour que `pre-commit` et `post-checkout` (installes dans `scripts/git-hooks/`) invoquent le script a chaque commit ou changement de branche ; les hooks ajoutent `README.md` si necessaire.
+
+<!-- branches-start -->
+
+La liste ci-dessous est regeneree automatiquement via `scripts/update-readme-branches.mjs` quand les hooks suivent les branches.
+
+| Branch | Dernier commit | Date |
+| --- | --- | --- |
+| `projet-s2c` | `66b8df2` - Add front-end as regular directory | 2026-01-12T12:30:12+01:00 |
+| `main` | `8ce5e88` - SmartWorkflow init | 2026-01-09T13:19:19+01:00 |
+
+<!-- branches-end -->

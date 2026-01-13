@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+node scripts/update-readme-branches.mjs
+if ! git diff --quiet -- README.md; then
+  git add README.md
+fi
